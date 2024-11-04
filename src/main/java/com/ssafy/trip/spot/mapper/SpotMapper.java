@@ -1,5 +1,8 @@
 package com.ssafy.trip.spot.mapper;
 
-public interface SpotMapper {
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
+public interface SpotMapper {
+	
 }
