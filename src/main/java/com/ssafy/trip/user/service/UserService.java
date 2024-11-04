@@ -1,11 +1,12 @@
-package com.ssafy.trip.user.mapper;
+package com.ssafy.trip.user.service;
 
 import java.util.List;
 import java.util.Map;
 
 import com.ssafy.trip.user.dto.UserDto;
 
-public interface UserMapper {
+public interface UserService {
+	
 	int idCheck(String userId) throws Exception;
 	void joinUser(UserDto userDto) throws Exception;
 	void updateUser(UserDto userDto) throws Exception;
