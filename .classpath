@@ -48,6 +48,5 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path=".classpath"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
