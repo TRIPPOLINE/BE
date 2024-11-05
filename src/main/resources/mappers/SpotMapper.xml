@@ -7,7 +7,7 @@
 	</select>
 	
 	<select id="selectBySido" parameterType="int" resultType="SigunguDto">
-		select sido_code as sidoCode, gugun_code as sidoName, gugun_name as gugunName
+		select sido_code as sidoCode, gugun_code as gugunCode, gugun_name as gugunName
 		from trip.guguns
 		where sido_code = #{sidoCode}
 	</select>
