@@ -3,6 +3,7 @@ package com.ssafy.trip.user.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.trip.user.dto.UserDto;
@@ -11,7 +12,8 @@ import com.ssafy.trip.user.mapper.UserMapper;
 @Service
 public class UserServiceImpl implements UserService{
 	
-	private final UserMapper userMapper;
+	@Autowired
+	private UserMapper userMapper;
 	
 	public UserServiceImpl(UserMapper userMapper) {
 		super();
