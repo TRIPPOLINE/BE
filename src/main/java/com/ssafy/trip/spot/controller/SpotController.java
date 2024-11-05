@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.trip.spot.dto.SidoDto;
+import com.ssafy.trip.spot.dto.SigunguDto;
 import com.ssafy.trip.spot.service.SpotService;
 
 @RestController
@@ -25,10 +26,19 @@ public class SpotController {
 	
 	@GetMapping("/sidos")
 	public ResponseEntity<?> selectAllSidos(){
-		List<SidoDto> sidoList = spotService.selectSidoList();
+		List<SidoDto> sidoList = spotService.selectAllSidos();
 		if(sidoList==null || sidoList.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(sidoList, HttpStatus.OK);
+	}
+	
+	@GetMapping("/sigungu")
+	public ResponseEntity<?> selectBySido(int sidoCode){
+		List<SigunguDto> sigunguList = spotService.selectBySido(sidoCode);
+		if(sigunguList==null || sigunguList.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(sigunguList, HttpStatus.OK);
 	}
 }

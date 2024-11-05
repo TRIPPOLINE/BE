@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.trip.spot.mapper.SpotMapper">
-  	<select id="selectSidoList" resultType="SidoDto">
-  select sido_code as sidoCode, sido_name as sidoName
-  from trip.sidos
-</select>
+  	<select id="selectAllSidos" resultType="SidoDto">
+	  select sido_code as sidoCode, sido_name as sidoName
+	  from trip.sidos
+	</select>
+	
+	<select id="selectBySido" parameterType="int" resultType="SigunguDto">
+		select sido_code as sidoCode, gugun_code as sidoName, gugun_name as gugunName
+		from trip.guguns
+		where sido_code = #{sidoCode}
+	</select>
 </mapper>
