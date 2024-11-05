@@ -13,7 +13,7 @@ public class SpotDto {
     private String imagePath2;
     private int mapLevel;
     private double latitude;
-    private double longtitude;
+    private double longitude;
     private String frontAddress;
     private String rearAddress;
 }
