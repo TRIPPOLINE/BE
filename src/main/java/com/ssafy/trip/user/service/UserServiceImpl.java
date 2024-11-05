@@ -13,7 +13,9 @@ import com.ssafy.trip.user.mapper.UserMapper;
 public class UserServiceImpl implements UserService{
 	
 	@Autowired
-	private UserMapper userMapper;
+
+	private final UserMapper userMapper;
+
 	
 	public UserServiceImpl(UserMapper userMapper) {
 		super();
