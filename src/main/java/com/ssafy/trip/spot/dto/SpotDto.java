@@ -4,8 +4,16 @@ import lombok.Data;
 
 @Data
 public class SpotDto {
-	private int sigungucode;
-    private int areacode;
-    private int contenttypeid;
-    private String spot_name;
+	private int spotId;
+    private int title;
+    private int contentTypeId;
+    private int sidoCode;
+    private int sigunguCode;
+    private String imagePath1;
+    private String imagePath2;
+    private int mapLevel;
+    private double latitude;
+    private double longtitude;
+    private String frontAddress;
+    private String rearAddress;
 }
