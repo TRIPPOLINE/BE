@@ -11,4 +11,69 @@
 		from trip.guguns
 		where sido_code = #{sidoCode}
 	</select>
+	
+	<select id="selectBySigungu" parameterType="int" resultType="SpotDto">
+		select content_id as spotId
+			  ,title as title
+			  ,content_type_id as contentTypeId
+			  ,sido_code as sidoCode
+			  ,sigungu_code as sigunguCode
+			  ,first_image1 as imagePath1
+			  ,first_image2 as imagePath2
+			  ,map_level as mapLevel
+			  ,latitude as latitude
+			  ,longitude as longitude
+			  ,addr1 as frontAddress
+			  ,addr2 as rearAddress
+	    from trip.spot
+	    where sigungu_code = #{sigunguCode}
+	</select>
+	
+	<select id="selectAllSpotTypes" resultType="SpotTypeDto">
+		select content_type_id as spotTypeId, content_type_name as spotTypeName
+		from trip.contenttypes
+	</select>
+	
+	<select id="selectBySpotType" resultType="SpotDto">
+		select content_id as spotId
+			  ,title as title
+			  ,content_type_id as contentTypeId
+			  ,sido_code as sidoCode
+			  ,sigungu_code as sigunguCode
+			  ,first_image1 as imagePath1
+			  ,first_image2 as imagePath2
+			  ,map_level as mapLevel
+			  ,latitude as latitude
+			  ,longitude as longitude
+			  ,addr1 as frontAddress
+			  ,addr2 as rearAddress
+	    from trip.spot
+	    where content_type_id = #{contentTypeId}
+	</select>
+	
+	<select id="selectSpotBySidoAndSigunguAndContentType" resultType="SpotDto">
+		select content_id as spotId
+			  ,title as title
+			  ,content_type_id as contentTypeId
+			  ,sido_code as sidoCode
+			  ,sigungu_code as sigunguCode
+			  ,first_image1 as imagePath1
+			  ,first_image2 as imagePath2
+			  ,map_level as mapLevel
+			  ,latitude as latitude
+			  ,longitude as longitude
+			  ,addr1 as frontAddress
+			  ,addr2 as rearAddress
+	    from trip.spot
+	    where 1=1
+	    <if test="sidoCode!=null">
+	    	and sido_code = #{sidoCode}
+	    </if>
+	    <if test="sigunguCode!=null">
+	    	and sigungu_code = #{sigunguCode}
+	    </if>
+	    <if test="contentTypeId!=null">
+	    	and content_type_id = #{contentTypeId}
+	    </if>
+	</select>
 </mapper>

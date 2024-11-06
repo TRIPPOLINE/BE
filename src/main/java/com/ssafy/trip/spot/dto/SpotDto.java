@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class SpotDto {
 	private int spotId;
-    private int title;
+    private String title;
     private int contentTypeId;
     private int sidoCode;
     private int sigunguCode;
