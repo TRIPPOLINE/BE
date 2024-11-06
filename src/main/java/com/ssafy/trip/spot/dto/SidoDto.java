@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Data
-public class AreaDto {
-	private int areacode;
-    private String areaname;
+public class SidoDto {
+	private int sidoCode;
+    private String sidoName;
 }

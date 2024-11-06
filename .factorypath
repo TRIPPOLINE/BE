@@ -84,4 +84,6 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/commons/commons-pool2/2.12.0/commons-pool2-2.12.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/spring-tx/6.1.14/spring-tx-6.1.14.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/security/spring-security-core/6.3.4/spring-security-core-6.3.4.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/springframework/security/spring-security-crypto/6.3.4/spring-security-crypto-6.3.4.jar" enabled="true" runInBatchMode="false"/>
 </factorypath>
