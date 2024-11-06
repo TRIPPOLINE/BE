@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class SpotTypeDto {
-	private int contenttypeid;
-    private String content_name;
+	private int spotTypeId;
+    private String spotTypeName;
 }
