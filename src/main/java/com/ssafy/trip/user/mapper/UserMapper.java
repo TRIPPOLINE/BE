@@ -9,11 +9,11 @@ import com.ssafy.trip.user.dto.UserDto;
 
 @Mapper
 public interface UserMapper {
-	int idCheck(String userId) throws Exception;
-	void joinUser(UserDto userDto) throws Exception;
-	void updateUser(UserDto userDto) throws Exception;
+	int idCheck(String userId) ;
+	void joinUser(UserDto userDto) ;
+	void updateUser(UserDto userDto) ;
 	
-	List<UserDto> listUser(Map<String, Object> map) throws Exception;
-	UserDto selectUser(String userId) throws Exception;
-	void deleteUser(String userid) throws Exception;
+	List<UserDto> listUser(Map<String, String> map) ;
+	UserDto selectUser(String userId) ;
+	void deleteUser(String userid);
 }

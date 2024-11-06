@@ -9,7 +9,7 @@ public class UserDto {
     private String user_name;
     private String user_password;
     private String email_id;
-    private String role;
+    private int role_id;
     private Date created_at;
     private Date updated_at;
 }

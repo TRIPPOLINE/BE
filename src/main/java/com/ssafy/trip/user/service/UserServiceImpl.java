@@ -10,45 +10,43 @@ import com.ssafy.trip.user.dto.UserDto;
 import com.ssafy.trip.user.mapper.UserMapper;
 
 @Service
-public class UserServiceImpl implements UserService{
-	
-	@Autowired
+public class UserServiceImpl implements UserService {
 
+	@Autowired
 	private final UserMapper userMapper;
 
-	
 	public UserServiceImpl(UserMapper userMapper) {
 		super();
 		this.userMapper = userMapper;
 	}
 
 	@Override
-	public int idCheck(String userId) throws Exception {
+	public int idCheck(String userId) {
 		return userMapper.idCheck(userId);
 	}
 
 	@Override
-	public void joinUser(UserDto userDto) throws Exception {
+	public void joinUser(UserDto userDto) {
 		userMapper.joinUser(userDto);
 	}
 
 	@Override
-	public List<UserDto> listUser(Map<String, Object> map) throws Exception {
+	public List<UserDto> listUser(Map<String, String> map) {
 		return userMapper.listUser(map);
 	}
 
 	@Override
-	public UserDto selectUser(String userId) throws Exception {
+	public UserDto selectUser(String userId) {
 		return userMapper.selectUser(userId);
 	}
 
 	@Override
-	public void updateUser(UserDto userDto) throws Exception {
+	public void updateUser(UserDto userDto) {
 		userMapper.updateUser(userDto);
 	}
 
 	@Override
-	public void deleteUser(String userid) throws Exception {
+	public void deleteUser(String userid) {
 		userMapper.deleteUser(userid);
 	}
 
