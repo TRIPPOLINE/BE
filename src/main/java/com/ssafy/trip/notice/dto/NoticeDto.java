@@ -2,6 +2,9 @@ package com.ssafy.trip.notice.dto;
 
 import java.sql.Date;
 
+import lombok.Data;
+
+@Data
 public class NoticeDto {
 	
 	private int notice_no;
@@ -11,5 +14,4 @@ public class NoticeDto {
 	private Date created_at;
 	private Date updated_at;
 	
-
 }
