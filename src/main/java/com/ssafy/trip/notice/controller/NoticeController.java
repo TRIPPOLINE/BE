@@ -30,7 +30,8 @@ public class NoticeController {
 		this.noticeService = noticeService;
 	}
 	
-	// 공지사항 목록 
+	// 공지사항 목록
+	// 커서 기반 페이지네이션
 	@GetMapping("/list")
 	public ResponseEntity<?> listNotice(@RequestParam Map<String, String> map){
 		List<NoticeDto> list = noticeService.listNotice(map);
