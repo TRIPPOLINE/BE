@@ -93,7 +93,7 @@ hs_err_pid*
 replay_pid*
 
 # 환경 설정 파일 제외
-application.properties
+#application.properties
 
 ### Maven ###
 target/
