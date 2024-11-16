@@ -12,7 +12,6 @@ public interface UserMapper {
 	int idCheck(String userId) ;
 	void joinUser(UserDto userDto) ;
 	void updateUser(UserDto userDto) ;
-	
 	List<UserDto> listUser(Map<String, String> map) ;
 	UserDto selectUser(String userId) ;
 	void deleteUser(String userid);

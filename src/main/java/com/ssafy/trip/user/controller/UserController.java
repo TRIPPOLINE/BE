@@ -1,5 +1,6 @@
 package com.ssafy.trip.user.controller;
 
+import com.ssafy.trip.auth.dto.JoinDto;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +53,8 @@ public class UserController {
 
 	// 회원가입
 	@PostMapping("/join")
-	public ResponseEntity<?> join(@RequestBody UserDto userDto) {
-		userService.joinUser(userDto);
+	public ResponseEntity<?> join(@RequestBody JoinDto joinDto) {
+		userService.joinUser(joinDto);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 

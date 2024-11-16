@@ -4,7 +4,7 @@
 
     <!-- Insert user into users table -->
     <insert id="joinUser">
-        INSERT INTO trip.users (user_id, user_name, user_password, email_id, created_at, updated_at, role_id)
+        INSERT INTO trip.users (user_id, user_name, user_password, email_id, created_at, updated_at, role)
         VALUES (#{id}, #{name}, #{password}, #{email}, NOW(), NOW(), #{roleId})
     </insert>
     
