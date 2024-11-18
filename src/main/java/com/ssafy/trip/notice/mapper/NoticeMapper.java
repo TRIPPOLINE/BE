@@ -11,7 +11,8 @@ import com.ssafy.trip.notice.dto.NoticeDto;
 public interface NoticeMapper {
 	
 	void writeNotice(NoticeDto noticeDto);
-	List<NoticeDto> listNotice(Map<String, String> map);
+	List<NoticeDto> listNotice(Map<String, Object> map);
+	int getTotalNoticeCount(Map<String, Object> map);
 	NoticeDto selectNotice(int noticeNo);
 	void modifyNotice(NoticeDto noticeDto);
 	void deleteNotice(int noticeNo);
