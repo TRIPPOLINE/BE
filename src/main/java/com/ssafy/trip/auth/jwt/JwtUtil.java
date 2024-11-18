@@ -61,8 +61,8 @@ public class JwtUtil {
      * @param token
      * @return
      */
-    public Long getUserId(String token){
-        return parseClaims(token).get("userId", Long.class);
+    public String getUserId(String token){
+        return parseClaims(token).get("userId", String.class);
     }
 
     /**
@@ -76,13 +76,13 @@ public class JwtUtil {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
+            log.info("유효하지 않은 토큰", e);
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
+            log.info("토큰 만료", e);
         } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
+            log.info("지원하지 않는 토큰", e);
         } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
+            log.info("JWT 클레임이 없음", e);
         }
         return false;
     }
