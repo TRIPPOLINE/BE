@@ -14,7 +14,7 @@
 	</select>
 	
 	<select id="selectUser" resultType="UserDto">
-		SELECT user_id, user_name, user_password, email_id, created_at, updated_at, role_id
+		SELECT user_id as id, user_name as name, user_password as password, email_id, role_id as roleId
 		FROM trip.users
 		WHERE user_id = #{user_id}
 	</select>

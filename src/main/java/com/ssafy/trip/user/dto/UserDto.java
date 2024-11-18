@@ -1,6 +1,7 @@
 package com.ssafy.trip.user.dto;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,4 @@ public class UserDto {
     private String password;
     private String email;
     private int roleId;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
 }

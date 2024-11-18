@@ -37,8 +37,6 @@ public class UserServiceImpl implements UserService {
 				.password(bCyrptPassowrdEncoder.encode(joinDto.getPassword()))
 				.email(joinDto.getEmail())
 				.roleId(2)
-				.created_at(LocalDateTime.now())
-				.updated_at(LocalDateTime.now())
 				.build();
 
 		if(userMapper.selectUser(joinDto.getId())!=null){
