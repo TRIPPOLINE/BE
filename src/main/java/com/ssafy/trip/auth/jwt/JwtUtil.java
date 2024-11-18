@@ -1,5 +1,7 @@
 package com.ssafy.trip.auth.jwt;
 
+import com.ssafy.trip.auth.dto.RefreshTokenDto;
+import com.ssafy.trip.auth.dto.TokenDto;
 import com.ssafy.trip.user.dto.UserDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -15,44 +17,51 @@ import java.util.Date;
 @Slf4j
 @Component
 public class JwtUtil {
-    private final Key key;
+    private final Key accesskey;
+    private final Key refreshKey;
     private final long accessTokenExpirationTime;
+    private final long refreshTokenExpirationTime;
 
     public JwtUtil(
-            @Value("${jwt.secret}") String secretKey,
-            @Value("${jwt.expiration-time}") long accessTokenExpirationTime
+            @Value("${jwt.access-secret}") String accessSecretKey,
+            @Value("${jwt.refresh-secret}") String refreshSecretKey,
+            @Value("${jwt.access-expiration-time}") long accessTokenExpirationTime,
+            @Value("${jwt.refresh-expiration-time}") long refreshTokenExpirationTime
     ){
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+        byte[] accessKeyBytes = Decoders.BASE64.decode(accessSecretKey);
+        byte[] refreshKeyBytes = Decoders.BASE64.decode(refreshSecretKey);
+        this.accesskey = Keys.hmacShaKeyFor(accessKeyBytes);
+        this.refreshKey = Keys.hmacShaKeyFor(refreshKeyBytes);
         this.accessTokenExpirationTime = accessTokenExpirationTime;
+        this.refreshTokenExpirationTime = refreshTokenExpirationTime;
     }
 
-    public String createAccessToken(UserDto user){
-        return createToken(user, accessTokenExpirationTime);
+    public TokenDto createAccessToken(UserDto user){
+        return createToken(user, accessTokenExpirationTime, refreshTokenExpirationTime);
     }
 
-    /**
-     * Accees Token 생성
-     * 
-     * @param user
-     * @param expirationTime
-     * @return
-     */
-    private String createToken(UserDto user, long expirationTime){
+
+    private TokenDto createToken(UserDto user, long accessTokenExpirationTime, long refreshTokenExpirationTime){
         Claims claims = Jwts.claims();
         claims.put("userId", user.getId());
         claims.put("email", user.getEmail());
         claims.put("role", user.getRoleId());
 
-        ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime tokenValidity = now.plusSeconds(expirationTime);
-
-        return Jwts.builder()
+        String accessToken = Jwts.builder()
                 .setClaims(claims)
-                .setExpiration(Date.from(now.toInstant()))
-                .setExpiration(Date.from(tokenValidity.toInstant()))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(Date.from(ZonedDateTime.now().toInstant()))
+                .setExpiration(Date.from(ZonedDateTime.now().plusSeconds(accessTokenExpirationTime).toInstant()))
+                .signWith(accesskey, SignatureAlgorithm.HS256)
                 .compact();
+
+        String refreshToken = Jwts.builder()
+                .setClaims(claims)
+                .setExpiration(Date.from(ZonedDateTime.now().toInstant()))
+                .setExpiration(Date.from(ZonedDateTime.now().plusSeconds(refreshTokenExpirationTime).toInstant()))
+                .signWith(refreshKey, SignatureAlgorithm.HS256)
+                .compact();
+
+        return TokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).key(user.getId()).build();
     }
 
     /**
@@ -73,7 +82,7 @@ public class JwtUtil {
      */
     public boolean validateToken(String token){
         try{
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(accesskey).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("유효하지 않은 토큰", e);
@@ -87,6 +96,41 @@ public class JwtUtil {
         return false;
     }
 
+    public String validateRefreshToken(RefreshTokenDto refreshTokenDto){
+        String refreshToken = refreshTokenDto.getRefreshToken();
+
+        try{
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(refreshKey).build().parseClaimsJws(refreshToken);
+
+            if(!claims.getBody().getExpiration().before(new Date())){
+                String userId = claims.getBody().get("userId").toString();
+                String email = claims.getBody().get("email").toString();
+                String roleString = (String) claims.getBody().get("role");
+                Integer role = Integer.valueOf(roleString);
+
+                return reissueAccessToken(userId, email, role);
+            }
+        }catch (IllegalArgumentException e){
+            return null;
+        }
+
+        return null;
+    }
+
+    public String reissueAccessToken(String userId, String email, Integer role){
+        Claims claims = Jwts.claims();
+        claims.put("userId", userId);
+        claims.put("email", email);
+        claims.put("role", role);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setExpiration(Date.from(ZonedDateTime.now().toInstant()))
+                .setExpiration(Date.from(ZonedDateTime.now().plusSeconds(accessTokenExpirationTime).toInstant()))
+                .signWith(accesskey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     /**
      * JWT 클레임 추출
      * 
@@ -95,7 +139,7 @@ public class JwtUtil {
      */
     private Claims parseClaims(String accessToken){
         try {
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+            return Jwts.parserBuilder().setSigningKey(accesskey).build().parseClaimsJws(accessToken).getBody();
         }catch (ExpiredJwtException e){
             return e.getClaims();
         }

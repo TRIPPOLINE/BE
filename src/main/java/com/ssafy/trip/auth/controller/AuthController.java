@@ -1,5 +1,6 @@
 package com.ssafy.trip.auth.controller;
 
+import com.ssafy.trip.auth.dto.TokenDto;
 import com.ssafy.trip.auth.dto.request.LoginRequestDto;
 import com.ssafy.trip.auth.dto.response.LoginResponseDto;
 import com.ssafy.trip.auth.service.AuthService;
@@ -19,10 +20,10 @@ public class AuthController {
     private final UserMapper userMapper;
 
     @PostMapping("login")
-    public ResponseEntity<?> getUser(
+    public ResponseEntity<?> authenticate(
             @RequestBody LoginRequestDto request //TODO : 유효성 검사
     ){
-        LoginResponseDto responseDto = this.authService.login(request);
-        return ResponseEntity.ok(responseDto);
+        TokenDto response = this.authService.login(request);
+        return ResponseEntity.ok(response);
     }
 }

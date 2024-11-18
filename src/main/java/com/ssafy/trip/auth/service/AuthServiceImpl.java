@@ -1,31 +1,48 @@
 package com.ssafy.trip.auth.service;
 
+import com.ssafy.trip.auth.dto.RefreshTokenDto;
+import com.ssafy.trip.auth.dto.TokenDto;
 import com.ssafy.trip.auth.dto.request.LoginRequestDto;
 import com.ssafy.trip.auth.dto.response.LoginResponseDto;
 import com.ssafy.trip.auth.jwt.JwtUtil;
+import com.ssafy.trip.auth.mapper.RefreshMapper;
 import com.ssafy.trip.user.dto.UserDto;
 import com.ssafy.trip.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
     private final JwtUtil jwtUtil;
     private final PasswordEncoder encoder;
     private final UserMapper userMapper;
+    private final RefreshMapper refreshMapper;
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
-    public LoginResponseDto login(LoginRequestDto request) {
+    public TokenDto login(LoginRequestDto request) {
         String userId = request.getUserId();
         String password = request.getPassword();
         UserDto userDto = userMapper.selectUser(userId);
 
+        //유저 검증 및 토큰 생성
+        validateUser(password, userDto);
+        TokenDto tokenDto = jwtUtil.createAccessToken(userDto);
+        
+        //리프레시 토큰 로테이션
+        rotateRefreshToken(tokenDto);
+
+        return tokenDto;
+    }
+
+    private void validateUser(String password, UserDto userDto){
         if(userDto == null){
             throw new UsernameNotFoundException("유저가 존재하지 않습니다");
         }
@@ -33,9 +50,17 @@ public class AuthServiceImpl implements AuthService{
         if(!encoder.matches(password, userDto.getPassword())){
             throw new BadCredentialsException("비밀번호가 일치하지 않습니다");
         }
+    }
 
-        String accessToken = jwtUtil.createAccessToken(userDto);
+    private void rotateRefreshToken(TokenDto tokenDto){
+        RefreshTokenDto refreshTokenDto = RefreshTokenDto.builder().keyUserId(tokenDto.getKey()).refreshToken(tokenDto.getRefreshToken()).build();
+        String loginUserId = refreshTokenDto.getKeyUserId();
 
-        return new LoginResponseDto(accessToken);
+        if(refreshMapper.existsByKeyUserId(loginUserId)){
+            log.info("기존에 DB에 저장된 리프레시 토큰을 삭제");
+            refreshMapper.deleteByKeyUserId(loginUserId);
+        }
+
+        refreshMapper.save(refreshTokenDto);
     }
 }
