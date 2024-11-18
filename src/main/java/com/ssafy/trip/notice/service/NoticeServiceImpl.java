@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class NoticeServiceImpl implements NoticeService{
+	private final int DEFAULT_PAGE_SIZE = 10; //TODO : 리팩터링
 	
 	@Autowired
 	private NoticeMapper noticeMapper;
@@ -28,8 +29,20 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public List<NoticeDto> listNotice(Map<String, String> map) {
+	public List<NoticeDto> listNotice(Map<String, Object> map) {
+		int pgno = (int) map.get("pgno");
+		int sizePerPage = (int) map.get("sizePerPage");
+		int offset = (pgno - 1) * sizePerPage;
+
+		map.put("offset", offset);
+		map.put("limit", sizePerPage);
+
 		return noticeMapper.listNotice(map);
+	}
+
+	@Override
+	public int getTotalNoticeCount(Map<String, Object> map) {
+		return noticeMapper.getTotalNoticeCount(map);
 	}
 
 	@Override
