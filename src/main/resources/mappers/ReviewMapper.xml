@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.trip.review.mapper.ReviewMapper">
     <select id="listReview" resultType="ReviewDto">
-        SELECT user_id, spot_id, content, score, write_at, trip_at
+        SELECT user_id as userId, spot_id as spotId, content, score, write_at as writeAt, trip_at as tripAt
         from trip.review
         where user_id = #{userId}
     </select>
