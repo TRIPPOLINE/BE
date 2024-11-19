@@ -4,28 +4,28 @@
 
     <!-- 해당 plan의 선택한 여행지 목록 -->
     <select id="listPlace" resultType="PlaceDto">
-        SELECT content_id as spotId, plan_id as planId, visit_order as visitOrder
+        SELECT spot_id as spotId, plan_id as planId, visit_order as visitOrder
         from trip.place
         WHERE plan_id = #{planId}
     </select>
 
     <!-- 해당 plan의 여행지 선택 -->
     <insert id="selectPlace" parameterType="placeDto">
-        INSERT INTO trip.place (content_id, plan_id, visit_order)
+        INSERT INTO trip.place (spot_id, plan_id, visit_order)
         VALUES (#{spotId}, #{planId}, #{visitOrder})
     </insert>
 
     <!-- 해당 plan의 선택한 여행지 삭제 -->
     <delete id="deletePlace" parameterType="int">
         DELETE FROM trip.place
-        WHERE plan_id = #{planId} AND content_id = #{spotId}
+        WHERE plan_id = #{planId} AND spot_id = #{spotId}
     </delete>
 
     <!-- 해당 plan의 선택한 여행지 순서 수정 -->
     <update id="modifyOrder" parameterType="PlaceDto">
         UPDATE trip.place
         SET visit_order = #{visitOrder}
-        WHERE content_id = #{spotId} AND plan_id = #{planId}
+        WHERE spot_id = #{spotId} AND plan_id = #{planId}
     </update>
 
     <!-- plan 생성 -->
