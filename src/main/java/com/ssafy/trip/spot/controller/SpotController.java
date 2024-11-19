@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import com.ssafy.trip.spot.service.SpotService;
 
 @RestController
 @RequestMapping("/spot")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class SpotController {
 	@Autowired
 	private SpotService spotService;
@@ -27,7 +29,7 @@ public class SpotController {
 	public SpotController(SpotService spotService) {
 		this.spotService = spotService;
 	}
-	
+
 	@GetMapping("/sidos")
 	public ResponseEntity<?> selectAllSidos(){
 		List<SidoDto> sidoList = spotService.selectAllSidos();
@@ -36,7 +38,7 @@ public class SpotController {
 		}
 		return new ResponseEntity<>(sidoList, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/sigungus/{sidoCode}")
 	public ResponseEntity<?> selectBySido(@PathVariable int sidoCode){
 		List<SigunguDto> sigunguList = spotService.selectBySido(sidoCode);
@@ -45,7 +47,7 @@ public class SpotController {
 		}
 		return new ResponseEntity<>(sigunguList, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/sigungu/{sigunguCode}/attraction")
 	public ResponseEntity<?> selectBySigungu(@PathVariable int sigunguCode){
 		List<SpotDto> spotList = spotService.selectBySigungu(sigunguCode);
@@ -54,7 +56,7 @@ public class SpotController {
 		}
 		return new ResponseEntity<>(spotList, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/contenttypes")
 	public ResponseEntity<?> selectAllSpotTypes(){
 		List<SpotTypeDto> spotTypeList = spotService.selectAllSpotTypes();
