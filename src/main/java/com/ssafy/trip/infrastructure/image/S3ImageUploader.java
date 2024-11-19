@@ -1,18 +1,21 @@
 package com.ssafy.trip.infrastructure.image;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.MultipartUpload;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-
-import java.awt.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
+
+@Slf4j
 @Service
 public class S3ImageUploader implements ImageUploader{
     private final S3Client s3Client;
@@ -27,22 +30,25 @@ public class S3ImageUploader implements ImageUploader{
 
     @Override
     public String uploadImage(MultipartFile file) {
-        String key = createFileKey(file.getOriginalFilename()); //TODO : 예외처리
+        String key = createFileKey(Objects.requireNonNull(file.getOriginalFilename()));
+
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
+                .contentType(file.getContentType())
+                .contentDisposition("inline")
                 .build();
-        Path filePath = Paths.get("premium_photo-1664474619075-644dd191935f.jpg");
-        if (Files.exists(filePath)) {
-            System.out.println("File exists!");
-        } else {
-            System.out.println("File does not exist!");
-        }
 
-        s3Client.putObject(putObjectRequest, Path.of(file.getOriginalFilename()));
+        try (InputStream inputStream = file.getInputStream()) {
+            s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, file.getSize()));
+        } catch (IOException e) {
+            log.error("파일 업로드 중 오류 발생", e);
+            throw new RuntimeException("파일 업로드 실패", e);
+        }
 
         return getS3FileUrl(key);
     }
+
 
     private String getS3FileUrl(String key) {
         return String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, region, key);

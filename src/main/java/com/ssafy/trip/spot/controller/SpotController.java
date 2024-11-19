@@ -83,11 +83,7 @@ public class SpotController {
 
 	@PostMapping("/upload")
 	public ResponseEntity<String> uploadImage(@RequestParam("file")MultipartFile file){
-		if(file.isEmpty()){
-			log.info("파일이 존재하지 않음");
-		}else log.info(file.getOriginalFilename());
-
-        String url = imageUploader.uploadImage(file);
+		String url = imageUploader.uploadImage(file);
         return ResponseEntity.ok(url);
     }
 }
