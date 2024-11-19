@@ -16,6 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -62,5 +66,34 @@ public class AuthServiceImpl implements AuthService{
         }
 
         refreshMapper.save(refreshTokenDto);
+    }
+
+    public String validateRefreshToken(String refreshToken){
+        RefreshTokenDto refreshTokenDto = getRefreshToken(refreshToken).get();
+        String reissuedAccessToken = jwtUtil.validateRefreshToken(refreshTokenDto);
+
+        return reissuedAccessToken;
+    }
+
+    private Optional<RefreshTokenDto> getRefreshToken(String refreshToken){
+        return refreshMapper.selectRefreshToken(refreshToken);
+    }
+
+    //TODO : 리팩터링
+    public Map<String, String> createTokenResponse(String accessToken){
+        Map<String, String> map = new HashMap<>();
+        if(accessToken==null){
+            map.put("error", "Forbidden");
+            map.put("status", "402");
+            map.put("message", "리프레시 토큰이 만료됨, 재로그인 필요");
+
+            return map;
+        }
+
+        map.put("status", "200");
+        map.put("message", "리프레시 토큰으로 엑세스 토큰 재발급 완료");
+        map.put("accessToken", accessToken);
+
+        return map;
     }
 }

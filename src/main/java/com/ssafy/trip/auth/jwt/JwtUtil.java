@@ -96,6 +96,12 @@ public class JwtUtil {
         return false;
     }
 
+    /**
+     * 리프레시 토큰 검증 후 엑세스 토큰 재발급
+     *
+     * @param refreshTokenDto
+     * @return
+     */
     public String validateRefreshToken(RefreshTokenDto refreshTokenDto){
         String refreshToken = refreshTokenDto.getRefreshToken();
 
@@ -105,9 +111,7 @@ public class JwtUtil {
             if(!claims.getBody().getExpiration().before(new Date())){
                 String userId = claims.getBody().get("userId").toString();
                 String email = claims.getBody().get("email").toString();
-                String roleString = (String) claims.getBody().get("role");
-                Integer role = Integer.valueOf(roleString);
-
+                Integer role = (Integer) claims.getBody().get("role");
                 return reissueAccessToken(userId, email, role);
             }
         }catch (IllegalArgumentException e){
