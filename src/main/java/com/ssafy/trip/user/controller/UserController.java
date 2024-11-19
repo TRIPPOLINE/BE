@@ -1,5 +1,6 @@
 package com.ssafy.trip.user.controller;
 
+import com.ssafy.trip.auth.dto.JoinDto;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ssafy.trip.notice.dto.NoticeDto;
 import com.ssafy.trip.user.dto.UserDto;
 import com.ssafy.trip.user.service.UserService;
-
-import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
 @RequestMapping("/user")
@@ -52,8 +49,8 @@ public class UserController {
 
 	// 회원가입
 	@PostMapping("/join")
-	public ResponseEntity<?> join(@RequestBody UserDto userDto) {
-		userService.joinUser(userDto);
+	public ResponseEntity<?> join(@RequestBody JoinDto joinDto) {
+		userService.joinUser(joinDto);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 

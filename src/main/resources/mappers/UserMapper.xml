@@ -5,7 +5,7 @@
     <!-- Insert user into users table -->
     <insert id="joinUser">
         INSERT INTO trip.users (user_id, user_name, user_password, email_id, created_at, updated_at, role_id)
-        VALUES (#{user_id}, #{user_name}, #{user_password}, #{email_id}, NOW(), NOW(), #{role_id})
+        VALUES (#{id}, #{name}, #{password}, #{email}, NOW(), NOW(), #{roleId})
     </insert>
     
     <select id="listUser" resultType="UserDto">
@@ -14,15 +14,15 @@
 	</select>
 	
 	<select id="selectUser" resultType="UserDto">
-		SELECT user_id, user_name, user_password, email_id, created_at, updated_at, role_id
+		SELECT user_id as id, user_name as name, user_password as password, email_id, role_id as roleId
 		FROM trip.users
 		WHERE user_id = #{user_id}
 	</select>
 	
 	<update id="updateUser" parameterType="UserDto">
         UPDATE trip.users
-        SET user_name = #{user_name},user_password = #{user_password},email_id = #{email_id}, updated_at = NOW()
-        WHERE user_id = #{user_id}
+        SET user_name = #{name},user_password = #{password},email_id = #{id}, updated_at = NOW()
+        WHERE user_id = #{id}
     </update>
     
     <delete id="deleteUser" parameterType="String">

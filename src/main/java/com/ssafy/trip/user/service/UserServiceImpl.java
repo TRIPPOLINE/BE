@@ -1,5 +1,8 @@
 package com.ssafy.trip.user.service;
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.ssafy.trip.auth.dto.JoinDto;
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -11,14 +14,15 @@ import com.ssafy.trip.user.mapper.UserMapper;
 
 @Service
 public class UserServiceImpl implements UserService {
-
 	@Autowired
 	private final UserMapper userMapper;
+	private final BCryptPasswordEncoder bCyrptPassowrdEncoder;
 
 	public UserServiceImpl(UserMapper userMapper) {
 		super();
 		this.userMapper = userMapper;
-	}
+        this.bCyrptPassowrdEncoder = new BCryptPasswordEncoder();;
+    }
 
 	@Override
 	public int idCheck(String userId) {
@@ -26,7 +30,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void joinUser(UserDto userDto) {
+	public void joinUser(JoinDto joinDto) {
+		UserDto userDto = UserDto.builder()
+				.id(joinDto.getId())
+				.name(joinDto.getName())
+				.password(bCyrptPassowrdEncoder.encode(joinDto.getPassword()))
+				.email(joinDto.getEmail())
+				.roleId(2)
+				.build();
+
+		if(userMapper.selectUser(joinDto.getId())!=null){
+			return; //todo : 예외 처리
+		}
 		userMapper.joinUser(userDto);
 	}
 
