@@ -1,5 +1,6 @@
 package com.ssafy.trip.user.service;
 
+import com.ssafy.trip.auth.dto.JoinDto;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ import com.ssafy.trip.user.dto.UserDto;
 public interface UserService {
 	
 	int idCheck(String userId) ;
-	void joinUser(UserDto userDto) ;
+	void joinUser(JoinDto join) ;
 	void updateUser(UserDto userDto) ;
 	
 	List<UserDto> listUser(Map<String, String> map) ;

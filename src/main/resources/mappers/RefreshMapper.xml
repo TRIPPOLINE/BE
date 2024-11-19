@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.trip.auth.mapper.RefreshMapper">
+    <select id="selectRefreshToken" resultType="RefreshTokenDto">
+        SELECT
+        id,
+        refresh_token AS refreshToken,
+        key_user_id AS keyUserId
+        FROM
+        refreshtoken
+        WHERE
+        refresh_token = #{refreshToken}
+    </select>
+
+    <select id="existsByKeyUserId" resultType="boolean">
+        SELECT
+        COUNT(1) > 0
+        FROM
+        refreshtoken
+        WHERE
+        key_user_id = #{userId}
+    </select>
+
+    <delete id="deleteByKeyUserId">
+        DELETE FROM
+        refreshtoken
+        WHERE
+        key_user_id = #{userId}
+    </delete>
+
+    <insert id="save" parameterType="RefreshTokenDto">
+        INSERT INTO refreshtoken (id, key_user_id, refresh_token)
+        VALUES (#{id}, #{keyUserId}, #{refreshToken})
+    </insert>
+</mapper>
