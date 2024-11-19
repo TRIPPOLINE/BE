@@ -16,7 +16,7 @@
 	<select id="selectUser" resultType="UserDto">
 		SELECT user_id as id, user_name as name, user_password as password, email_id, role_id as roleId
 		FROM trip.users
-		WHERE user_id = #{user_id}
+		WHERE user_id = #{id}
 	</select>
 	
 	<update id="updateUser" parameterType="UserDto">
@@ -27,7 +27,7 @@
     
     <delete id="deleteUser" parameterType="String">
         DELETE FROM trip.users
-        WHERE user_id = #{user_id}
+        WHERE user_id = #{id}
     </delete>
 
 </mapper>
