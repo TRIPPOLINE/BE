@@ -13,7 +13,7 @@
 	</select>
 	
 	<select id="selectBySigungu" parameterType="int" resultType="SpotDto">
-		select content_id as spotId
+		select spot_id as spotId
 			  ,title as title
 			  ,content_type_id as contentTypeId
 			  ,sido_code as sidoCode
@@ -35,7 +35,7 @@
 	</select>
 	
 	<select id="selectBySpotType" resultType="SpotDto">
-		select content_id as spotId
+		select spot_id as spotId
 			  ,title as title
 			  ,content_type_id as contentTypeId
 			  ,sido_code as sidoCode
@@ -52,7 +52,7 @@
 	</select>
 	
 	<select id="selectSpotBySidoAndSigunguAndContentType" resultType="SpotDto">
-		select content_id as spotId
+		select spot_id as spotId
 			  ,title as title
 			  ,content_type_id as contentTypeId
 			  ,sido_code as sidoCode
