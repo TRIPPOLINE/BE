@@ -1,38 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.trip.place.mapper.PlanMapper">
+<mapper namespace="com.ssafy.trip.plan.mapper.PlanMapper">
 
-    <insert id="selectPlace" parameterType="placeDto">
-        INSERT INTO trip.place ( content_id, plan_id, visit_order)
-        VALUES (#{placeId},#{planId},#{visitOrder})
-    </insert>
-    <delete id="deletePlace" parameterType="int">
-        DELETE FROM trip.place
-        WHERE content_id = #{spotId} AND plan_id = #{planId}
-    </delete>
+    <!-- 해당 plan의 선택한 여행지 목록 -->
     <select id="listPlace" resultType="PlaceDto">
         SELECT content_id as spotId, plan_id as planId, visit_order as visitOrder
         from trip.place
         WHERE plan_id = #{planId}
     </select>
+
+    <!-- 해당 plan의 여행지 선택 -->
+    <insert id="selectPlace" parameterType="placeDto">
+        INSERT INTO trip.place (content_id, plan_id, visit_order)
+        VALUES (#{spotId}, #{planId}, #{visitOrder})
+    </insert>
+
+    <!-- 해당 plan의 선택한 여행지 삭제 -->
+    <delete id="deletePlace" parameterType="int">
+        DELETE FROM trip.place
+        WHERE plan_id = #{planId} AND content_id = #{spotId}
+    </delete>
+
+    <!-- 해당 plan의 선택한 여행지 순서 수정 -->
     <update id="modifyOrder" parameterType="PlaceDto">
         UPDATE trip.place
         SET visit_order = #{visitOrder}
         WHERE content_id = #{spotId} AND plan_id = #{planId}
     </update>
-<!--
-    <update id="updateOrder" parameterType="placeDto">
-        UPDATE Place
-        SET order = #{order}
-        WHERE place_id = #{placeId}
-          AND plan_id = #{planId}
-    </update>
 
-    <select id="listPlace" parameterType="int" resultType="planDto">
-        SELECT *
-        FROM Place
+    <!-- plan 생성 -->
+    <insert id="insertPlan" parameterType="planDto">
+        INSERT INTO trip.plan (user_id, plan_at, trip_at)
+        VALUES (#{userId}, now(), #{tripAt})
+    </insert>
+
+    <!-- plan 삭제 -->
+    <insert id="deletePlan" parameterType="planDto">
+        DELETE FROM trip.plan
         WHERE plan_id = #{planId}
-        ORDER BY order ASC
-    </select>-->
+    </insert>
+
 
 </mapper>

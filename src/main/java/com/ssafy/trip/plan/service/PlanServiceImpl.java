@@ -1,6 +1,7 @@
 package com.ssafy.trip.plan.service;
 
 import com.ssafy.trip.plan.dto.PlaceDto;
+import com.ssafy.trip.plan.dto.PlanDto;
 import com.ssafy.trip.plan.mapper.PlanMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import java.util.Map;
 public class PlanServiceImpl implements PlanService {
 
     @Autowired
-
     private PlanMapper planMapper;
 
     public PlanServiceImpl(PlanMapper planMapper) {
@@ -37,12 +37,17 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public void modifyPlace(PlaceDto placeDto) {
-        planMapper.modifyPlace(placeDto);
+    public void modifyOrder(PlaceDto placeDto) {
+        planMapper.modifyOrder(placeDto);
     }
-//
-//    @Override
-//    public List<PlaceDto> listPlace(int planId) {
-//        return planMapper.listPlace(planId);
-//    }
+
+    @Override
+    public void insertPlan(PlanDto planDto) {
+        planMapper.insertPlan(planDto);
+    }
+
+    @Override
+    public void deletePlan(PlanDto planDto) {
+        planMapper.deletePlan(planDto);
+    }
 }
