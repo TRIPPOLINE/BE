@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 @Data
 public class ReviewDto {
+    private int reviewNo;
     private String userId;
     private int spotId;
     private String content;

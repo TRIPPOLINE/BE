@@ -7,7 +7,7 @@
         where user_id = #{userId}
     </select>
 
-    <insert id="writeReview" parameterType="ReviewDto">
+    <insert id="writeReview" parameterType="ReviewDto" useGeneratedKeys="true" keyProperty="reviewNo">
         INSERT INTO trip.review (user_id, spot_id, content, score, write_at, trip_at)
         VALUES (#{userId}, #{spotId}, #{content}, #{score}, now(),#{tripAt})
     </insert>

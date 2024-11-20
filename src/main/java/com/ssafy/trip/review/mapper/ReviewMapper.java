@@ -11,7 +11,7 @@ import java.util.Map;
 public interface ReviewMapper {
 
     List<ReviewDto> listReview(Map<String, String> map);
-    void writeReview(ReviewDto reviewDto);
+    int writeReview(ReviewDto reviewDto);
     void modifyReview(ReviewDto reviewDto);
     void deleteReview(ReviewDto reviewDto);
     void insertReviewPhoto(@Param("reviewNo") int reviewNo, @Param("photoUrl") String photoUrl);

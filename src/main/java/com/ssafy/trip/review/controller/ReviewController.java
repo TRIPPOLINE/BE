@@ -1,16 +1,22 @@
 package com.ssafy.trip.review.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.trip.review.dto.ReviewDto;
 import com.ssafy.trip.review.dto.request.RequestReview;
 import com.ssafy.trip.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
 
+@PreAuthorize("hasRole('ROLE_USER')")
 @RestController
 @RequestMapping("/review")
 public class ReviewController {
@@ -34,8 +40,9 @@ public class ReviewController {
 
     // 리뷰 작성
     @PostMapping("/write")
-    public ResponseEntity<?> writeReview(@RequestBody RequestReview requestReview){
-        reviewService.writeReview(reviewDto);
+    public ResponseEntity<?> writeReview(@RequestPart String requestReviewJson, @RequestPart List<MultipartFile> photos) throws JsonProcessingException {
+        RequestReview requestReview = new ObjectMapper().readValue(requestReviewJson, RequestReview.class);
+        reviewService.writeReview(requestReview, photos);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

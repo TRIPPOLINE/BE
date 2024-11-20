@@ -13,5 +13,4 @@ public class RequestReview {
     private String content;
     private float score;
     private Date tripAt;
-    private List<MultipartFile> photos; // 사진 파일 리스트
 }
