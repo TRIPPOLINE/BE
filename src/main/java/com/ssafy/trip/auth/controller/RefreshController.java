@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 public class RefreshController {
-    private AuthService authService;
+    private final AuthService authService;
 
     @PostMapping("/refresh")
     public ResponseEntity<?> validateRefreshToken(@RequestBody HashMap<String, String> body){

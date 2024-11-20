@@ -1,33 +1,37 @@
 package com.ssafy.trip.spot.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 
+import com.ssafy.trip.infrastructure.image.ImageUploader;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.trip.spot.dto.SidoDto;
 import com.ssafy.trip.spot.dto.SigunguDto;
 import com.ssafy.trip.spot.dto.SpotDto;
 import com.ssafy.trip.spot.dto.SpotTypeDto;
 import com.ssafy.trip.spot.service.SpotService;
+import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RestController
 @RequestMapping("/spot")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class SpotController {
-	@Autowired
-	private SpotService spotService;
+	private final SpotService spotService;
+	private final ImageUploader imageUploader;
 	
-	public SpotController(SpotService spotService) {
+	public SpotController(SpotService spotService, ImageUploader imageUploader) {
 		this.spotService = spotService;
-	}
-	
+        this.imageUploader = imageUploader;
+    }
+
 	@GetMapping("/sidos")
 	public ResponseEntity<?> selectAllSidos(){
 		List<SidoDto> sidoList = spotService.selectAllSidos();
@@ -36,7 +40,7 @@ public class SpotController {
 		}
 		return new ResponseEntity<>(sidoList, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/sigungus/{sidoCode}")
 	public ResponseEntity<?> selectBySido(@PathVariable int sidoCode){
 		List<SigunguDto> sigunguList = spotService.selectBySido(sidoCode);
@@ -45,7 +49,7 @@ public class SpotController {
 		}
 		return new ResponseEntity<>(sigunguList, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/sigungu/{sigunguCode}/attraction")
 	public ResponseEntity<?> selectBySigungu(@PathVariable int sigunguCode){
 		List<SpotDto> spotList = spotService.selectBySigungu(sigunguCode);
@@ -54,7 +58,7 @@ public class SpotController {
 		}
 		return new ResponseEntity<>(spotList, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/contenttypes")
 	public ResponseEntity<?> selectAllSpotTypes(){
 		List<SpotTypeDto> spotTypeList = spotService.selectAllSpotTypes();
@@ -76,4 +80,10 @@ public class SpotController {
 		}
 		return new ResponseEntity<>(spotList, HttpStatus.OK);
 	}
+
+	@PostMapping("/upload")
+	public ResponseEntity<String> uploadImage(@RequestParam("file")MultipartFile file){
+		String url = imageUploader.uploadImage(file);
+        return ResponseEntity.ok(url);
+    }
 }
