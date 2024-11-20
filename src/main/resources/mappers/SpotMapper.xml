@@ -90,9 +90,7 @@
 		longitude,
 		addr1 AS frontAddress,
 		addr2 AS rearAddress
-
 		FROM spot
-
 		WHERE ST_Contains(
 		ST_MakeEnvelope(#{minLng}, #{minLat}, #{maxLng}, #{maxLat}, 4326),
 		location
@@ -100,9 +98,8 @@
 		<if test="cursor != null">
 			AND spot_id > #{cursor}
 		</if>
-
 		ORDER BY spot_id ASC
-
 		LIMIT #{limit}
 	</select>
+
 </mapper>
