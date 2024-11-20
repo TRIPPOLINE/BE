@@ -16,4 +16,12 @@ public interface SpotService {
 	List<SpotTypeDto> selectAllSpotTypes();
 	List<SpotDto> selectBySpotType(int contentTypeId);
 	List<SpotDto> selectSpotBySidoAndSigunguAndContentType(Integer sidoCode, Integer sigunguCode, Integer contentTypeId);
+	List<SpotDto> selectSpotsInBounds(
+			@Param("minLat") double minLat,
+			@Param("maxLat") double maxLat,
+			@Param("minLng") double minLng,
+			@Param("maxLng") double maxLng,
+			@Param("cursor") Integer cursor,
+			@Param("limit") int limit
+	);
 }

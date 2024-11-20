@@ -19,4 +19,12 @@ public interface SpotMapper {
 	List<SpotTypeDto> selectAllSpotTypes();
 	List<SpotDto> selectBySpotType(@Param("contentTypeId") int contentTypeId);
 	List<SpotDto> selectSpotBySidoAndSigunguAndContentType(@Param("sidoCode") Integer sidoCode, @Param("sigunguCode") Integer sigunguCode, @Param("contentTypeId") Integer contentTypeId);
+	List<SpotDto> selectSpotsInBounds(
+			@Param("minLat") double minLat,
+			@Param("maxLat") double maxLat,
+			@Param("minLng") double minLng,
+			@Param("maxLng") double maxLng,
+			@Param("cursor") Integer cursor,
+			@Param("limit") int limit
+	);
 }

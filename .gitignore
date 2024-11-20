@@ -92,8 +92,6 @@ local.properties
 hs_err_pid*
 replay_pid*
 
-# 환경 설정 파일 제외
-application.properties
 
 ### Maven ###
 target/
@@ -115,3 +113,5 @@ buildNumber.properties
 .classpath
 
 .idea/
+
+.env

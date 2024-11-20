@@ -50,4 +50,9 @@ public class SpotServiceImpl implements SpotService {
 	public List<SpotDto> selectSpotBySidoAndSigunguAndContentType(Integer sidoCode, Integer sigunguCode, Integer contentTypeId) {
 		return spotMapper.selectSpotBySidoAndSigunguAndContentType(sidoCode, sigunguCode, contentTypeId);
 	}
+
+	@Override
+	public List<SpotDto> selectSpotsInBounds(double minLat, double maxLat, double minLng, double maxLng, Integer cursor, int limit) {
+		return spotMapper.selectSpotsInBounds(minLat, maxLat, minLng, maxLng, cursor, limit);
+	}
 }

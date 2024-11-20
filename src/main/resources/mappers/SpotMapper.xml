@@ -76,4 +76,37 @@
 	    	and content_type_id = #{contentTypeId}
 	    </if>
 	</select>
+
+	<select id="selectSpotsInBounds" parameterType="map" resultType="SpotDto">
+		SELECT spot_id AS spotId,
+		title,
+		content_type_id AS contentTypeId,
+		area_code AS sidoCode,
+		si_gun_gu_code AS sigunguCode,
+		first_image1 AS imagePath1,
+		first_image2 AS imagePath2,
+		map_level AS mapLevel,
+		latitude,
+		longitude,
+		addr1 AS frontAddress,
+		addr2 AS rearAddress
+
+		FROM spot
+
+		WHERE ST_Contains(
+			ST_MakeEnvelope(
+				ST_GeomFromText(CONCAT('POINT(', #{minLng}, ' ', #{minLat}, ')')),
+				ST_GeomFromText(CONCAT('POINT(', #{maxLng}, ' ', #{maxLat}, ')'))
+			),
+			location
+		)
+
+		<if test="cursor != null">
+			AND spot_id > #{cursor}
+		</if>
+
+		ORDER BY spot_id ASC
+		LIMIT #{limit}
+	</select>
+
 </mapper>

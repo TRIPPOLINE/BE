@@ -1,5 +1,7 @@
 package com.ssafy.trip.spot.controller;
 
+import com.ssafy.trip.spot.dto.request.NearbySearchRequest;
+import com.ssafy.trip.spot.dto.response.NearbySearchResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -25,11 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 @PreAuthorize("hasRole('ROLE_USER')")
 public class SpotController {
 	private final SpotService spotService;
-	private final ImageUploader imageUploader;
 	
-	public SpotController(SpotService spotService, ImageUploader imageUploader) {
+	public SpotController(SpotService spotService) {
 		this.spotService = spotService;
-        this.imageUploader = imageUploader;
     }
 
 	@GetMapping("/sidos")
@@ -81,9 +81,21 @@ public class SpotController {
 		return new ResponseEntity<>(spotList, HttpStatus.OK);
 	}
 
-	@PostMapping("/upload")
-	public ResponseEntity<String> uploadImage(@RequestParam("file")MultipartFile file){
-		String url = imageUploader.uploadImage(file);
-        return ResponseEntity.ok(url);
-    }
+	@PostMapping("/currentLocation")
+	public ResponseEntity<NearbySearchResponse> nearbySearchSpot(@RequestBody NearbySearchRequest request){
+		List<SpotDto> nearbySpots = spotService.selectSpotsInBounds(
+				request.getMinLatitude(),
+				request.getMaxLatitude(),
+				request.getMinLongitude(),
+				request.getMaxLongitude(),
+				request.getCursor(),
+				request.getLimit()
+		);
+
+		Integer nextCursor = nearbySpots.isEmpty()?null:nearbySpots.get(nearbySpots.size()-1).getSpotId();
+
+		NearbySearchResponse response = new NearbySearchResponse(nearbySpots, nextCursor);
+
+		return ResponseEntity.ok(response);
+	}
 }
