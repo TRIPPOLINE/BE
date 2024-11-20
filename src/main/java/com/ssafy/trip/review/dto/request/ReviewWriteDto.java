@@ -1,15 +1,11 @@
-package com.ssafy.trip.review.dto;
+package com.ssafy.trip.review.dto.request;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
-@Builder
 @Data
-public class ReviewDto {
-    private int reviewNo;
+public class ReviewWriteDto {
     private String userId;
     private int spotId;
     private String content;
