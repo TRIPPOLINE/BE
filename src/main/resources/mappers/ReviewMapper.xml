@@ -12,13 +12,13 @@
         VALUES (#{userId}, #{spotId}, #{content}, #{score}, now(),#{tripAt})
     </insert>
 
-    <update id="modifyReview" parameterType="ReviewDto">
+    <update id="modifyReview" parameterType="ReviewUpdateDto">
         UPDATE trip.review
         SET content = #{content}, score = #{score}
-        WHERE user_id = #{userId} AND spot_id = #{spotId}
+        WHERE user_id = #{userId} AND spot_id = #{spotId} AND review_no = #{reviewNo}
     </update>
 
-    <delete id="deleteReview" parameterType="ReviewDto">
+    <delete id="deleteReview" parameterType="ReviewDeleteDto">
         DELETE FROM trip.review
         WHERE user_id = #{userId} AND review_no = #{reviewNo}
     </delete>

@@ -3,6 +3,7 @@ package com.ssafy.trip.review.service;
 import com.ssafy.trip.infrastructure.image.ImageUploader;
 import com.ssafy.trip.review.dto.ReviewDto;
 import com.ssafy.trip.review.dto.request.ReviewDeleteDto;
+import com.ssafy.trip.review.dto.request.ReviewUpdateDto;
 import com.ssafy.trip.review.dto.request.ReviewWriteDto;
 import com.ssafy.trip.review.mapper.ReviewMapper;
 import com.ssafy.trip.user.mapper.UserMapper;
@@ -56,7 +57,7 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public void modifyReview(ReviewDto reviewDto) {
+    public void modifyReview(ReviewUpdateDto reviewDto) {
         reviewMapper.modifyReview(reviewDto);
     }
 
