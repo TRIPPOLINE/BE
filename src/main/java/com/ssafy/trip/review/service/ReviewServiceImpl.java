@@ -1,13 +1,12 @@
 package com.ssafy.trip.review.service;
 
 import com.ssafy.trip.infrastructure.image.ImageUploader;
-import com.ssafy.trip.plan.mapper.PlanMapper;
 import com.ssafy.trip.review.dto.ReviewDto;
-import com.ssafy.trip.review.dto.request.RequestReview;
+import com.ssafy.trip.review.dto.request.ReviewDeleteDto;
+import com.ssafy.trip.review.dto.request.ReviewWriteDto;
 import com.ssafy.trip.review.mapper.ReviewMapper;
 import com.ssafy.trip.user.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,17 +34,17 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Transactional
     @Override
-    public void writeReview(RequestReview requestReview, List<MultipartFile> photos) {
+    public void writeReview(ReviewWriteDto reviewWriteDto, List<MultipartFile> photos) {
 
-        log.info("유저 id : "+requestReview.getUserId());
-        log.info("유저 존재 여부 : "+userMapper.selectUser(requestReview.getUserId()).toString());
+        log.info("유저 id : "+ reviewWriteDto.getUserId());
+        log.info("유저 존재 여부 : "+userMapper.selectUser(reviewWriteDto.getUserId()).toString());
 
         ReviewDto reviewDto = ReviewDto.builder()
-                .userId(requestReview.getUserId())
-                .spotId(requestReview.getSpotId())
-                .content(requestReview.getContent())
-                .score(requestReview.getScore())
-                .tripAt(requestReview.getTripAt())
+                .userId(reviewWriteDto.getUserId())
+                .spotId(reviewWriteDto.getSpotId())
+                .content(reviewWriteDto.getContent())
+                .score(reviewWriteDto.getScore())
+                .tripAt(reviewWriteDto.getTripAt())
                 .build();
 
         reviewMapper.writeReview(reviewDto);
@@ -62,8 +61,8 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public void deleteReview(ReviewDto reviewDto) {
-        reviewMapper.deleteReview(reviewDto);
+    public void deleteReview(ReviewDeleteDto reviewDeleteDto) {
+        reviewMapper.deleteReview(reviewDeleteDto);
     }
 
     @Transactional

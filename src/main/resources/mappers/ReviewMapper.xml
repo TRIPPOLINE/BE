@@ -18,9 +18,9 @@
         WHERE user_id = #{userId} AND spot_id = #{spotId}
     </update>
 
-    <delete id="deleteReview">
+    <delete id="deleteReview" parameterType="ReviewDto">
         DELETE FROM trip.review
-        WHERE user_id = #{userId} AND spot_id = #{spotId}
+        WHERE user_id = #{userId} AND review_no = #{reviewNo}
     </delete>
 
     <insert id="insertReviewPhoto">
