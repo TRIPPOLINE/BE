@@ -23,4 +23,9 @@
         WHERE user_id = #{userId} AND spot_id = #{spotId}
     </delete>
 
+    <insert id="insertReviewPhoto">
+        INSERT INTO reviewphotos (review_no, photo_url)
+        VALUES (#{reviewNo}, #{photoUrl})
+    </insert>
+
 </mapper>

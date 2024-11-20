@@ -1,6 +1,7 @@
 package com.ssafy.trip.review.controller;
 
 import com.ssafy.trip.review.dto.ReviewDto;
+import com.ssafy.trip.review.dto.request.RequestReview;
 import com.ssafy.trip.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class ReviewController {
 
     // 리뷰 작성
     @PostMapping("/write")
-    public ResponseEntity<?> writeReview(@RequestBody ReviewDto reviewDto){
+    public ResponseEntity<?> writeReview(@RequestBody RequestReview requestReview){
         reviewService.writeReview(reviewDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

@@ -2,6 +2,7 @@ package com.ssafy.trip.review.mapper;
 
 import com.ssafy.trip.review.dto.ReviewDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -13,5 +14,5 @@ public interface ReviewMapper {
     void writeReview(ReviewDto reviewDto);
     void modifyReview(ReviewDto reviewDto);
     void deleteReview(ReviewDto reviewDto);
-
+    void insertReviewPhoto(@Param("reviewNo") int reviewNo, @Param("photoUrl") String photoUrl);
 }
