@@ -22,7 +22,7 @@ import com.ssafy.trip.user.dto.UserDto;
 import com.ssafy.trip.user.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
 	@Autowired
