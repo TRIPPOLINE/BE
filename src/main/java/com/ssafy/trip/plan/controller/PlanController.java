@@ -41,12 +41,12 @@ public class PlanController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    // 해당 plan의 여행지 삭제
-    @PostMapping("/deletePlace")
+
     public ResponseEntity<?> deletePlace(@RequestBody PlaceDto placeDto) {
         planService.deletePlace(placeDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
 
     // 해당 plan의 여행지 순서 변경
     @PostMapping("/order")
@@ -68,6 +68,4 @@ public class PlanController {
         planService.deletePlan(planDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-
 }

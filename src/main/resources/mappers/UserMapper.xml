@@ -29,5 +29,4 @@
         DELETE FROM trip.users
         WHERE user_id = #{id}
     </delete>
-
 </mapper>

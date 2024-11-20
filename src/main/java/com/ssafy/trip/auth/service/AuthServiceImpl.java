@@ -84,7 +84,7 @@ public class AuthServiceImpl implements AuthService{
         Map<String, String> map = new HashMap<>();
         if(accessToken==null){
             map.put("error", "Forbidden");
-            map.put("status", "402");
+            map.put("status", "403");
             map.put("message", "리프레시 토큰이 만료됨, 재로그인 필요");
 
             return map;

@@ -24,7 +24,7 @@ public class CustomerUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<String> roles = new ArrayList<>();
-        String userRole = userDto.getRoleId()==1?"admin":"user";
+        String userRole = userDto.getRoleId()==1?"ADMIN":"USER";
         roles.add("ROLE_"+userRole);
 
         return roles.stream()

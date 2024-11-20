@@ -2,9 +2,7 @@ package com.ssafy.trip.auth.controller;
 
 import com.ssafy.trip.auth.dto.TokenDto;
 import com.ssafy.trip.auth.dto.request.LoginRequestDto;
-import com.ssafy.trip.auth.dto.response.LoginResponseDto;
 import com.ssafy.trip.auth.service.AuthService;
-import com.ssafy.trip.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
-    private final UserMapper userMapper;
 
     @PostMapping("login")
     public ResponseEntity<?> authenticate(
