@@ -21,7 +21,7 @@ public interface SpotService {
 			@Param("maxLat") double maxLat,
 			@Param("minLng") double minLng,
 			@Param("maxLng") double maxLng,
-			@Param("cursor") Long cursor,
+			@Param("cursor") Integer cursor,
 			@Param("limit") int limit
 	);
 }

@@ -8,6 +8,6 @@ public class NearbySearchRequest {
     private double maxLatitude;
     private double minLongitude;
     private double maxLongitude;
-    private Long cursor; // 마지막 ID
+    private Integer cursor; // 마지막 ID
     private int limit;
 }

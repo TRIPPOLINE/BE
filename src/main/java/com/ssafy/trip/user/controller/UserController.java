@@ -23,7 +23,7 @@ import com.ssafy.trip.user.dto.UserDto;
 import com.ssafy.trip.user.service.UserService;
 
 @RestController
-@PreAuthorize("hasRole('ROLE_USER')")
+@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
@@ -76,6 +76,7 @@ public class UserController {
 	}
 
 	// 회원 탈퇴
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/delete/{user_id}")
 	public ResponseEntity<?> delete(@PathVariable String user_id) {
 		userService.deleteUser(user_id);
@@ -84,6 +85,7 @@ public class UserController {
 	}
 
 	// 회원 정보 수정
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/update/{user_id}")
 	public ResponseEntity<?> modify(@RequestBody UserDto userDto) {
 		userService.updateUser(userDto);
