@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-//import com.ssafy.trip.infrastructure.image.ImageUploader;
+import com.ssafy.trip.infrastructure.image.ImageUploader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,14 +22,14 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequestMapping("/spot")
-//@PreAuthorize("hasRole('ROLE_USER')")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class SpotController {
 	private final SpotService spotService;
-	//private final ImageUploader imageUploader;
+	private final ImageUploader imageUploader;
 	
-	public SpotController(SpotService spotService) {
+	public SpotController(SpotService spotService, ImageUploader imageUploader) {
 		this.spotService = spotService;
-        //this.imageUploader = imageUploader;
+        this.imageUploader = imageUploader;
     }
 
 	@GetMapping("/sidos")
@@ -81,9 +81,9 @@ public class SpotController {
 		return new ResponseEntity<>(spotList, HttpStatus.OK);
 	}
 
-	//@PostMapping("/upload")
-	//public ResponseEntity<String> uploadImage(@RequestParam("file")MultipartFile file){
-	//	String url = imageUploader.uploadImage(file);
-    //    return ResponseEntity.ok(url);
-    //}
+	@PostMapping("/upload")
+	public ResponseEntity<String> uploadImage(@RequestParam("file")MultipartFile file){
+		String url = imageUploader.uploadImage(file);
+        return ResponseEntity.ok(url);
+    }
 }

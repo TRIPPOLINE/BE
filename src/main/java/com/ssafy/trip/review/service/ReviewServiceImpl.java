@@ -1,6 +1,6 @@
 package com.ssafy.trip.review.service;
 
-//import com.ssafy.trip.infrastructure.image.ImageUploader;
+import com.ssafy.trip.infrastructure.image.ImageUploader;
 import com.ssafy.trip.review.dto.ReviewDto;
 import com.ssafy.trip.review.dto.request.ReviewDeleteDto;
 import com.ssafy.trip.review.dto.request.ReviewUpdateDto;
@@ -19,12 +19,12 @@ import java.util.Map;
 @Service
 public class ReviewServiceImpl implements ReviewService{
     private final ReviewMapper reviewMapper;
-    //private final ImageUploader imageUploader;
+    private final ImageUploader imageUploader;
     private final UserMapper userMapper;
 
-    public ReviewServiceImpl(ReviewMapper reviewMapper, UserMapper userMapper) {
+    public ReviewServiceImpl(ReviewMapper reviewMapper, ImageUploader imageUploader, UserMapper userMapper) {
         this.reviewMapper = reviewMapper;
-        //.imageUploader = imageUploader;
+        this.imageUploader = imageUploader;
         this.userMapper = userMapper;
     }
 
@@ -53,7 +53,7 @@ public class ReviewServiceImpl implements ReviewService{
 
         log.info("등록된 리뷰 번호 : "+reviewNo);
 
-        //uploadReviewPhotos(photos, reviewNo);
+        uploadReviewPhotos(photos, reviewNo);
     }
 
     @Override
@@ -66,13 +66,13 @@ public class ReviewServiceImpl implements ReviewService{
         reviewMapper.deleteReview(reviewDeleteDto);
     }
 
-    //@Transactional
-    //public void uploadReviewPhotos(List<MultipartFile> photos, int reviewNo){
-    //    if(photos!=null){
-    //        for(MultipartFile photo : photos){
-     //           String photoUrl = imageUploader.uploadImage(photo);
-    //            reviewMapper.insertReviewPhoto(reviewNo, photoUrl);
-    //        }
-    //    }
-    //}
+    @Transactional
+    public void uploadReviewPhotos(List<MultipartFile> photos, int reviewNo){
+        if(photos!=null){
+            for(MultipartFile photo : photos){
+                String photoUrl = imageUploader.uploadImage(photo);
+                reviewMapper.insertReviewPhoto(reviewNo, photoUrl);
+            }
+        }
+    }
 }
