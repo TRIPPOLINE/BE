@@ -3,6 +3,8 @@ package com.ssafy.trip.notice.service;
 import java.util.List;
 import java.util.Map;
 
+import com.ssafy.trip.global.util.PageResult;
+import com.ssafy.trip.global.util.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,15 +31,21 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public List<NoticeDto> listNotice(Map<String, Object> map) {
-		int pgno = (int) map.get("pgno");
-		int sizePerPage = (int) map.get("sizePerPage");
-		int offset = (pgno - 1) * sizePerPage;
+	public PageResult<NoticeDto> listNotice(int page, int size) {
+		Map<String, Object> params = PaginationUtil.createPaginationMap(page, size);
+		List<NoticeDto> notices = noticeMapper.listNotice(params);
+		int totalCount = noticeMapper.getTotalCount();
+		return PaginationUtil.getPageResult(notices, page, size, totalCount);
+	}
 
-		map.put("offset", offset);
-		map.put("limit", sizePerPage);
-
-		return noticeMapper.listNotice(map);
+	@Override
+	public PageResult<NoticeDto> searchNotice(int page, int size, String key, String word) {
+		Map<String, Object> params = PaginationUtil.createPaginationMap(page, size);
+		params.put("key", key);
+		params.put("word", word);
+		List<NoticeDto> notices = noticeMapper.searchNotice(params);
+		int totalCount = noticeMapper.getTotalSearchCount(params);
+		return PaginationUtil.getPageResult(notices, page, size, totalCount);
 	}
 
 	@Override
