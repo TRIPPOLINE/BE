@@ -1,14 +1,12 @@
 package com.ssafy.trip.spot.controller;
 
-import com.ssafy.trip.spot.dto.request.NearbySearchRequest;
-import com.ssafy.trip.spot.dto.response.NearbySearchResponse;
-import java.io.IOException;
+import com.ssafy.trip.spot.dto.request.SearchSpotInBoundRequest;
+import com.ssafy.trip.spot.dto.response.SearchSpotInBoundResponse;
+
 import java.util.List;
 
 
-import com.ssafy.trip.infrastructure.image.ImageUploader;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +17,6 @@ import com.ssafy.trip.spot.dto.SigunguDto;
 import com.ssafy.trip.spot.dto.SpotDto;
 import com.ssafy.trip.spot.dto.SpotTypeDto;
 import com.ssafy.trip.spot.service.SpotService;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -81,8 +78,8 @@ public class SpotController {
 		return new ResponseEntity<>(spotList, HttpStatus.OK);
 	}
 
-	@PostMapping("/currentLocation")
-	public ResponseEntity<NearbySearchResponse> nearbySearchSpot(@RequestBody NearbySearchRequest request){
+	@GetMapping("/currentLocation")
+	public ResponseEntity<SearchSpotInBoundResponse> nearbySearchSpot(@RequestBody SearchSpotInBoundRequest request){
 		List<SpotDto> nearbySpots = spotService.selectSpotsInBounds(
 				request.getMinLatitude(),
 				request.getMaxLatitude(),
@@ -94,7 +91,7 @@ public class SpotController {
 
 		Integer nextCursor = nearbySpots.isEmpty()?null:nearbySpots.get(nearbySpots.size()-1).getSpotId();
 
-		NearbySearchResponse response = new NearbySearchResponse(nearbySpots, nextCursor);
+		SearchSpotInBoundResponse response = new SearchSpotInBoundResponse(nearbySpots, nextCursor);
 
 		return ResponseEntity.ok(response);
 	}
