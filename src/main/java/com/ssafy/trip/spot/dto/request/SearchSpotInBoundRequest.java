@@ -3,7 +3,7 @@ package com.ssafy.trip.spot.dto.request;
 import lombok.Data;
 
 @Data
-public class NearbySearchRequest {
+public class SearchSpotInBoundRequest {
     private double minLatitude;
     private double maxLatitude;
     private double minLongitude;
