@@ -2,6 +2,7 @@ package com.ssafy.trip.spot.service;
 
 import java.util.List;
 
+import com.ssafy.trip.spot.dto.request.SpotFilterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,8 +48,8 @@ public class SpotServiceImpl implements SpotService {
 	}
 
 	@Override
-	public List<SpotDto> selectSpotBySidoAndSigunguAndContentType(Integer sidoCode, Integer sigunguCode, Integer contentTypeId) {
-		return spotMapper.selectSpotBySidoAndSigunguAndContentType(sidoCode, sigunguCode, contentTypeId);
+	public List<SpotDto> selectSpotBySidoAndSigunguAndContentType(SpotFilterRequest spotFilterRequest) {
+		return spotMapper.selectSpotBySidoAndSigunguAndContentType(spotFilterRequest);
 	}
 
 	@Override
