@@ -15,7 +15,7 @@ public interface PlanMapper {
     void selectPlace(PlaceDto placeDto);
     void deletePlace(PlaceDto placeDto);
     void modifyOrder(PlaceDto placeDto);
-    void insertPlan(PlanDto planDto);
+    int insertPlan(PlanDto planDto);
     void deletePlan(PlanDto planDto);
 
 }
