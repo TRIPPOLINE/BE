@@ -21,8 +21,8 @@ import com.ssafy.trip.spot.service.SpotService;
 
 @Slf4j
 @RestController
-@RequestMapping("/spot")
-@PreAuthorize("hasRole('ROLE_USER')")
+@RequestMapping("api/spot")
+//@PreAuthorize("hasRole('ROLE_USER')")
 public class SpotController {
 	private final SpotService spotService;
 	
@@ -66,7 +66,7 @@ public class SpotController {
 		return new ResponseEntity<>(spotTypeList, HttpStatus.OK);
 	}
 
-	@GetMapping("/search")
+	@PostMapping("/search")
 	public ResponseEntity<?> getFilteredSpots(@RequestBody SpotFilterRequest filterRequest){
 		log.info("sidoCode : "+filterRequest.getAreaCode());
 		log.info("sigunguCode : "+filterRequest.getSiGunGuCode());
