@@ -29,7 +29,7 @@
     </update>
 
     <!-- plan 생성 -->
-    <insert id="insertPlan" parameterType="planDto">
+    <insert id="insertPlan" parameterType="planDto" useGeneratedKeys="true" keyProperty="planId">
         INSERT INTO trip.plan (user_id, plan_at, trip_at)
         VALUES (#{userId}, now(), #{tripAt})
     </insert>

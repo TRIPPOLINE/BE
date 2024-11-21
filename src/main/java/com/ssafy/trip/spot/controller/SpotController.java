@@ -66,7 +66,7 @@ public class SpotController {
 		return new ResponseEntity<>(spotTypeList, HttpStatus.OK);
 	}
 
-	@GetMapping("/search")
+	@PostMapping("/search")
 	public ResponseEntity<?> getFilteredSpots(@RequestBody SpotFilterRequest filterRequest){
 		log.info("sidoCode : "+filterRequest.getAreaCode());
 		log.info("sigunguCode : "+filterRequest.getSiGunGuCode());

@@ -21,6 +21,8 @@ public class PlanServiceImpl implements PlanService {
         this.planMapper = planMapper;
     }
 
+
+
     @Override
     public List<PlaceDto> listPlace(Map<String, String> map) {
         return planMapper.listPlace(map);
@@ -42,8 +44,8 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public void insertPlan(PlanDto planDto) {
-        planMapper.insertPlan(planDto);
+    public int insertPlan(PlanDto planDto) {
+        return planMapper.insertPlan(planDto);
     }
 
     @Override

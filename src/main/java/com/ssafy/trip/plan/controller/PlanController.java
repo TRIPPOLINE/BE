@@ -14,7 +14,7 @@ import java.util.Map;
 
 //@PreAuthorize("hasRole('ROLE_USER')")
 @RestController
-@RequestMapping("/plan")
+@RequestMapping("/api/plan")
 public class PlanController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class PlanController {
 
     // 해당 plan의 선택한 여행지 목록
     @GetMapping("/list")
-    public ResponseEntity<?> listNotice(@RequestParam Map<String, String> map){
+    public ResponseEntity<?> listPlace(@RequestParam Map<String, String> map){
         List<PlaceDto> list = planService.listPlace(map);
         if (list == null || list.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -41,7 +41,7 @@ public class PlanController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
+    @PostMapping("/delete")
     public ResponseEntity<?> deletePlace(@RequestBody PlaceDto placeDto) {
         planService.deletePlace(placeDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -58,8 +58,8 @@ public class PlanController {
     // 여행 계획 생성
     @PostMapping("/insert")
     public ResponseEntity<?> insertPlan(@RequestBody PlanDto planDto){
-        planService.insertPlan(planDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        int result = planService.insertPlan(planDto);
+        return new ResponseEntity<>(planDto, HttpStatus.CREATED);
     }
 
     // 여행 계획 삭제
