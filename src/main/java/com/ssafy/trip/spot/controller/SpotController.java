@@ -23,8 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
-@RequestMapping("/spot")
-@PreAuthorize("hasRole('ROLE_USER')")
+@RequestMapping("/api/spot")
+//@PreAuthorize("hasRole('ROLE_USER')")
 public class SpotController {
 	private final SpotService spotService;
 	
