@@ -6,7 +6,6 @@ import java.util.Date;
 
 @Data
 public class PlanDto {
-
     private int planId;
     private String userId;
     private Date planAt;
