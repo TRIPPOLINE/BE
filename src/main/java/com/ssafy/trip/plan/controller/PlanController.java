@@ -58,7 +58,7 @@ public class PlanController {
     // 여행 계획 생성
     @PostMapping("/insert")
     public ResponseEntity<?> insertPlan(@RequestBody PlanDto planDto){
-        int result = planService.insertPlan(planDto);
+        planService.insertPlan(planDto);
         return new ResponseEntity<>(planDto, HttpStatus.CREATED);
     }
 
@@ -67,5 +67,11 @@ public class PlanController {
     public ResponseEntity<?> deletePlan(@RequestBody PlanDto planDto){
         planService.deletePlan(planDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    //여행 계획 검색
+    @GetMapping("/search")
+    public List<PlanDto> searchPlans(@RequestParam String keyword) {
+        return planService.searchPlans(keyword);
     }
 }

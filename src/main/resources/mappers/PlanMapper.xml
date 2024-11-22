@@ -40,5 +40,14 @@
         WHERE plan_id = #{planId}
     </insert>
 
+    <!-- plan 검색 -->
+    <select id="searchPlans" parameterType="String" resultType="PlanDto">
+        SELECT DISTINCT p.plan_id as planId, p.user_id as userId, p.plan_at as planAt, p.trip_at as tripAt
+        FROM plan p
+                 JOIN place pl ON p.plan_id = pl.plan_id
+                 JOIN spot s ON pl.spot_id = s.spot_id
+        WHERE MATCH(s.title, s.addr1, s.addr2) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
+           OR MATCH(p.plan_id, p.user_id) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
+    </select>
 
 </mapper>

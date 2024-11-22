@@ -17,5 +17,5 @@ public interface PlanMapper {
     void modifyOrder(PlaceDto placeDto);
     int insertPlan(PlanDto planDto);
     void deletePlan(PlanDto planDto);
-
+    List<PlanDto> searchPlans(String keyword);
 }

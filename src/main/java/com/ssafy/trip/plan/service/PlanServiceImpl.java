@@ -52,4 +52,9 @@ public class PlanServiceImpl implements PlanService {
     public void deletePlan(PlanDto planDto) {
         planMapper.deletePlan(planDto);
     }
+
+    @Override
+    public List<PlanDto> searchPlans(String keyword) {
+        return planMapper.searchPlans(keyword);
+    }
 }
