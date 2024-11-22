@@ -96,4 +96,19 @@ public class AuthServiceImpl implements AuthService{
 
         return map;
     }
+
+    @Override
+    public boolean checkFirstLogin(String userId) {
+        return refreshMapper.existsByKeyUserId(userId);
+    }
+
+    public TokenDto issueTokenForFirstLoginUser(LoginRequestDto request){
+        String userId = request.getUserId();
+        String password = request.getPassword();
+        UserDto userDto = userMapper.selectUser(userId);
+
+        validateUser(password, userDto);
+
+        return jwtUtil.createAccessToken(userDto);
+    }
 }

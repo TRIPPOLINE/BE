@@ -24,10 +24,7 @@ import com.ssafy.trip.user.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
-@PreAuthorize("hasRole('ROLE_USER')")
 public class UserController {
-
-	@Autowired
 	private UserService userService;
 
 	public UserController(UserService userService) {
@@ -53,6 +50,7 @@ public class UserController {
 	@PostMapping("/join")
 	public ResponseEntity<?> join(@RequestBody JoinDto joinDto) {
 		userService.joinUser(joinDto);
+
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 

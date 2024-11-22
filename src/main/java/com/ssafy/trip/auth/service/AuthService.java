@@ -10,4 +10,6 @@ public interface AuthService {
     public TokenDto login(LoginRequestDto request);
     public String validateRefreshToken(String refreshToken);
     public Map<String, String> createTokenResponse(String accessToken);
+    public boolean checkFirstLogin(String userId);
+    public TokenDto issueTokenForFirstLoginUser(LoginRequestDto request);
 }
