@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<?> authenticate(
             @RequestBody LoginRequestDto request //TODO : 유효성 검사
     ){
