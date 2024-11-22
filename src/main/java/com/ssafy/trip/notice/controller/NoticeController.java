@@ -9,6 +9,7 @@ import com.ssafy.trip.review.dto.ReviewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.trip.notice.dto.NoticeDto;
@@ -52,12 +53,14 @@ public class NoticeController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/write")
 	public ResponseEntity<?> write(@RequestBody NoticeDto noticeDto) {
 		noticeService.writeNotice(noticeDto);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/modify/{noticeNo}")
 	public ResponseEntity<?> getModify(@PathVariable int noticeNo) {
 		NoticeDto noticeDto = noticeService.selectNotice(noticeNo);
@@ -67,6 +70,7 @@ public class NoticeController {
 		return new ResponseEntity<>(noticeDto, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/modify/{noticeNo}")
 	public ResponseEntity<?> modify(@PathVariable int noticeNo, @RequestBody NoticeDto noticeDto) {
 		noticeDto.setNoticeNo(noticeNo);
@@ -74,6 +78,7 @@ public class NoticeController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/delete/{noticeNo}")
 	public ResponseEntity<?> delete(@PathVariable int noticeNo) {
 		noticeService.deleteNotice(noticeNo);
