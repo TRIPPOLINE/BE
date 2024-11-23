@@ -2,10 +2,9 @@ package com.ssafy.trip.spot.mapper;
 
 import java.util.List;
 
-import com.ssafy.trip.spot.dto.request.SpotFilterRequest;
+import com.ssafy.trip.spot.dto.request.SpotSearchRequestDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.mybatis.spring.annotation.MapperScan;
 
 import com.ssafy.trip.spot.dto.SidoDto;
 import com.ssafy.trip.spot.dto.SigunguDto;
@@ -19,7 +18,7 @@ public interface SpotMapper {
 	List<SpotDto> selectBySigungu(@Param("sigunguCode") int sigunguCode);
 	List<SpotTypeDto> selectAllSpotTypes();
 	List<SpotDto> selectBySpotType(@Param("contentTypeId") int contentTypeId);
-	List<SpotDto> selectSpotBySidoAndSigunguAndContentType(SpotFilterRequest spotFilterRequest);
+	List<SpotDto> selectSpotBySidoAndSigunguAndContentType(SpotSearchRequestDto spotSearchRequestDto);
 	List<SpotDto> selectSpotsInBounds(
 			@Param("minLat") double minLat,
 			@Param("maxLat") double maxLat,

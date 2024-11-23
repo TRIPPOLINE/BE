@@ -3,6 +3,7 @@ package com.ssafy.trip.review.mapper;
 import com.ssafy.trip.review.dto.ReviewDto;
 import com.ssafy.trip.review.dto.request.ReviewDeleteDto;
 import com.ssafy.trip.review.dto.request.ReviewUpdateDto;
+import com.ssafy.trip.review.dto.response.ReviewResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,6 +12,9 @@ import java.util.Map;
 
 @Mapper
 public interface ReviewMapper {
+    List<ReviewResponseDto> searchReviews(@Param("keyword") String keyword,
+                                          @Param("offset") int offset,
+                                          @Param("size") int size);
 
     List<ReviewDto> listUserReview(Map<String, String> map);
     List<ReviewDto> listSpotReview(Map<String, String> map);

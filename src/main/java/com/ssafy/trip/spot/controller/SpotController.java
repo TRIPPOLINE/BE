@@ -1,7 +1,7 @@
 package com.ssafy.trip.spot.controller;
 
 import com.ssafy.trip.spot.dto.request.SearchSpotInBoundRequest;
-import com.ssafy.trip.spot.dto.request.SpotFilterRequest;
+import com.ssafy.trip.spot.dto.request.SpotSearchRequestDto;
 import com.ssafy.trip.spot.dto.response.SearchSpotInBoundResponse;
 
 import java.util.List;
@@ -67,11 +67,13 @@ public class SpotController {
 	}
 
 	@PostMapping("/search")
-	public ResponseEntity<?> getFilteredSpots(@RequestBody SpotFilterRequest filterRequest){
+	public ResponseEntity<List<SpotDto>> searchSpots(@RequestBody SpotSearchRequestDto filterRequest){
 		log.info("sidoCode : "+filterRequest.getAreaCode());
 		log.info("sigunguCode : "+filterRequest.getSiGunGuCode());
 		log.info("contentTypeId : "+filterRequest.getContentTypeId());
-		List<SpotDto> spotList = spotService.selectSpotBySidoAndSigunguAndContentType(filterRequest);
+		log.info("keyword" + filterRequest.getKeyword());
+
+		List<SpotDto> spotList = spotService.selectSpotBySidoAndSigunguAndContentTypeAndKeyword(filterRequest);
 		if(spotList==null || spotList.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
