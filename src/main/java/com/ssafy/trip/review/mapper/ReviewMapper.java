@@ -12,7 +12,8 @@ import java.util.Map;
 @Mapper
 public interface ReviewMapper {
 
-    List<ReviewDto> listReview(Map<String, String> map);
+    List<ReviewDto> listUserReview(Map<String, String> map);
+    List<ReviewDto> listSpotReview(Map<String, String> map);
     void writeReview(ReviewDto reviewDto);
     void modifyReview(ReviewUpdateDto reviewDto);
     void deleteReview(ReviewDeleteDto reviewDeleteDto);

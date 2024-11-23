@@ -19,7 +19,7 @@ import java.util.Map;
 
 @PreAuthorize("hasRole('ROLE_USER')")
 @RestController
-@RequestMapping("/review")
+@RequestMapping("/api/review")
 public class ReviewController {
 
     @Autowired
@@ -30,9 +30,18 @@ public class ReviewController {
     }
 
     // 해당 사용자가 작성한 리뷰 목록
-    @GetMapping("/list")
-    public ResponseEntity<?> listReview(@RequestParam Map<String, String> map){
-        List<ReviewDto> list = reviewService.listReview(map);
+    @GetMapping("/userlist")
+    public ResponseEntity<?> listUserReview(@RequestParam Map<String, String> map){
+        List<ReviewDto> list = reviewService.listUserReview(map);
+        if(list == null || list.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    // 해당 여행지의 리뷰 목록
+    @GetMapping("/spotlist")
+    public ResponseEntity<?> listSpotReview(@RequestParam Map<String, String> map){
+        List<ReviewDto> list = reviewService.listSpotReview(map);
         if(list == null || list.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

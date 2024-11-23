@@ -29,8 +29,13 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public List<ReviewDto> listReview(Map<String, String> map) {
-        return reviewMapper.listReview(map);
+    public List<ReviewDto> listUserReview(Map<String, String> map) {
+        return reviewMapper.listUserReview(map);
+    }
+
+    @Override
+    public List<ReviewDto> listSpotReview(Map<String, String> map) {
+        return reviewMapper.listSpotReview(map);
     }
 
     @Transactional
