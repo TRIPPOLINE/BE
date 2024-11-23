@@ -70,7 +70,7 @@ public class SpotServiceImpl implements SpotService {
 
 	private String processKeyword(String keyword) {
 		if (keyword == null || keyword.trim().isEmpty()) {
-			return "*";
+			return null;
 		}
 		return Arrays.stream(keyword.split("\\s+"))
 				.map(word -> "+" + word + "*")
