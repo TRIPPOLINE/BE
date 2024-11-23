@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface ReviewService {
-    List<ReviewDto> listReview(Map<String, String> map);
+    List<ReviewDto> listUserReview(Map<String, String> map);
+    List<ReviewDto> listSpotReview(Map<String, String> map);
     void writeReview(ReviewWriteDto reviewWriteDto, List<MultipartFile> photos);
     void modifyReview(ReviewUpdateDto reviewDto);
     void deleteReview(ReviewDeleteDto reviewDeleteDto);
