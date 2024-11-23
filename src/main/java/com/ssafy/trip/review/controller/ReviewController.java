@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.trip.review.dto.ReviewDto;
 import com.ssafy.trip.review.dto.request.ReviewDeleteDto;
+import com.ssafy.trip.review.dto.request.ReviewSearchDto;
 import com.ssafy.trip.review.dto.request.ReviewUpdateDto;
 import com.ssafy.trip.review.dto.request.ReviewWriteDto;
+import com.ssafy.trip.review.dto.response.ReviewResponseDto;
 import com.ssafy.trip.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,5 +70,11 @@ public class ReviewController {
     public ResponseEntity<?> deleteReview(@RequestBody ReviewDeleteDto reviewDeleteDto){
         reviewService.deleteReview(reviewDeleteDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ReviewResponseDto>> searchReviews(@RequestBody ReviewSearchDto searchDto) {
+        List<ReviewResponseDto> reviews = reviewService.searchReviews(searchDto);
+        return ResponseEntity.ok(reviews);
     }
 }

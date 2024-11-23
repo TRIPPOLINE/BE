@@ -3,10 +3,13 @@ package com.ssafy.trip.review.service;
 import com.ssafy.trip.infrastructure.image.ImageUploader;
 import com.ssafy.trip.review.dto.ReviewDto;
 import com.ssafy.trip.review.dto.request.ReviewDeleteDto;
+import com.ssafy.trip.review.dto.request.ReviewSearchDto;
 import com.ssafy.trip.review.dto.request.ReviewUpdateDto;
 import com.ssafy.trip.review.dto.request.ReviewWriteDto;
+import com.ssafy.trip.review.dto.response.ReviewResponseDto;
 import com.ssafy.trip.review.mapper.ReviewMapper;
 import com.ssafy.trip.user.mapper.UserMapper;
+import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,21 +48,26 @@ public class ReviewServiceImpl implements ReviewService{
         log.info("유저 id : "+ reviewWriteDto.getUserId());
         log.info("유저 존재 여부 : "+userMapper.selectUser(reviewWriteDto.getUserId()).toString());
 
+        // ReviewWriteDto에서 ReviewDto로 변환 (title 포함)
         ReviewDto reviewDto = ReviewDto.builder()
                 .userId(reviewWriteDto.getUserId())
                 .spotId(reviewWriteDto.getSpotId())
+                .title(reviewWriteDto.getTitle())  // title 추가
                 .content(reviewWriteDto.getContent())
                 .score(reviewWriteDto.getScore())
-                .tripAt(reviewWriteDto.getTripAt())
+                .writeAt(LocalDateTime.now())
                 .build();
 
-        reviewMapper.writeReview(reviewDto);
-        int reviewNo = reviewDto.getReviewNo();
+        //리뷰 게시
+        reviewMapper.writeReview(reviewDto);  // reviewNo가 자동 생성됨
+        int reviewNo = reviewDto.getReviewNo();  // 삽입 후 reviewNo 확인
 
         log.info("등록된 리뷰 번호 : "+reviewNo);
 
+        //첨부 사진들 게시
         uploadReviewPhotos(photos, reviewNo);
     }
+
 
     @Override
     public void modifyReview(ReviewUpdateDto reviewDto) {
@@ -69,6 +77,12 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public void deleteReview(ReviewDeleteDto reviewDeleteDto) {
         reviewMapper.deleteReview(reviewDeleteDto);
+    }
+
+    @Override
+    public List<ReviewResponseDto> searchReviews(ReviewSearchDto searchDto) {
+        int offset = (searchDto.getPage() - 1) * searchDto.getSize();
+        return reviewMapper.searchReviews(searchDto.getKeyword(), offset, searchDto.getSize());
     }
 
     @Transactional
