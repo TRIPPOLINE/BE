@@ -2,7 +2,7 @@ package com.ssafy.trip.spot.service;
 
 import java.util.List;
 
-import com.ssafy.trip.spot.dto.request.SpotFilterRequest;
+import com.ssafy.trip.spot.dto.request.SpotSearchRequestDto;
 import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.trip.spot.dto.SidoDto;
@@ -16,7 +16,7 @@ public interface SpotService {
 	List<SpotDto> selectBySigungu(int sigunguCode);
 	List<SpotTypeDto> selectAllSpotTypes();
 	List<SpotDto> selectBySpotType(int contentTypeId);
-	List<SpotDto> selectSpotBySidoAndSigunguAndContentType(SpotFilterRequest spotFilterRequest);
+	List<SpotDto> selectSpotBySidoAndSigunguAndContentTypeAndKeyword(SpotSearchRequestDto spotSearchRequestDto);
 	List<SpotDto> selectSpotsInBounds(
 			@Param("minLat") double minLat,
 			@Param("maxLat") double maxLat,
