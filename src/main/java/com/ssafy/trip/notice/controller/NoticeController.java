@@ -60,7 +60,7 @@ public class NoticeController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/modify/{noticeNo}")
 	public ResponseEntity<?> getModify(@PathVariable int noticeNo) {
 		NoticeDto noticeDto = noticeService.selectNotice(noticeNo);
