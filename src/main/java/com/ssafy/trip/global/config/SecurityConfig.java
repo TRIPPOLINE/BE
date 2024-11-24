@@ -45,7 +45,7 @@ public class SecurityConfig {
 
 
         //JwtAuthFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
-        http.addFilterBefore(new JwtAuthFilter(customerUserDetailService, jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthFilter(jwtUtil, customerUserDetailService), UsernamePasswordAuthenticationFilter.class);
 
 
         // 권한 규칙 작성
