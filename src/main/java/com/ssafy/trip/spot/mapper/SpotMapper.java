@@ -5,6 +5,7 @@ import java.util.List;
 import com.ssafy.trip.spot.dto.request.SpotSearchRequestDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.mybatis.spring.annotation.MapperScan;
 
 import com.ssafy.trip.spot.dto.SidoDto;
 import com.ssafy.trip.spot.dto.SigunguDto;
@@ -23,9 +24,7 @@ public interface SpotMapper {
 			@Param("minLat") double minLat,
 			@Param("maxLat") double maxLat,
 			@Param("minLng") double minLng,
-			@Param("maxLng") double maxLng,
-			@Param("cursor") Integer cursor,
-			@Param("limit") int limit
+			@Param("maxLng") double maxLng
 	);
 	SpotDto selectSpotById(int spotId);
 }

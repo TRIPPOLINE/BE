@@ -2,9 +2,9 @@ package com.ssafy.trip.spot.service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.ssafy.trip.spot.dto.request.SpotSearchRequestDto;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +16,10 @@ import com.ssafy.trip.spot.mapper.SpotMapper;
 
 @Service
 public class SpotServiceImpl implements SpotService {
-	
+
 	@Autowired
 	private SpotMapper spotMapper;
-	
+
 	public SpotServiceImpl(SpotMapper spotMapper) {
 		this.spotMapper = spotMapper;
 	}
@@ -64,16 +64,14 @@ public class SpotServiceImpl implements SpotService {
 	}
 
 	@Override
-	public List<SpotDto> selectSpotsInBounds(double minLat, double maxLat, double minLng, double maxLng, Integer cursor, int limit) {
-		return spotMapper.selectSpotsInBounds(minLat, maxLat, minLng, maxLng, cursor, limit);
+	public List<SpotDto> selectSpotsInBounds(double minLat, double maxLat, double minLng, double maxLng) {
+		return spotMapper.selectSpotsInBounds(minLat, maxLat, minLng, maxLng);
 	}
-
 
 	@Override
 	public SpotDto selectSpotById(int spotId) {
 		return spotMapper.selectSpotById(spotId);
-  }
-
+	}
 	private String processKeyword(String keyword) {
 		if (keyword == null || keyword.trim().isEmpty()) {
 			return null;
