@@ -28,4 +28,5 @@ public interface SpotMapper {
 			@Param("cursor") Integer cursor,
 			@Param("limit") int limit
 	);
+	SpotDto selectSpotById(int spotId);
 }

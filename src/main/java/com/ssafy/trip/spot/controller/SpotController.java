@@ -95,4 +95,13 @@ public class SpotController {
 
 		return ResponseEntity.ok(response);
 	}
+
+	@GetMapping("/{spotId}")
+	public ResponseEntity<?> selectSpotById(@PathVariable int spotId) {
+		SpotDto spotDto = spotService.selectSpotById(spotId);
+		if (spotDto == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(spotDto, HttpStatus.OK);
+	}
 }
