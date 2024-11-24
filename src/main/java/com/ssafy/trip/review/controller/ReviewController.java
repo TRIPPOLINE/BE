@@ -74,8 +74,24 @@ public class ReviewController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+//    @GetMapping("/search")
+//    public ResponseEntity<List<ReviewResponseDto>> searchReviews(@RequestBody ReviewSearchDto searchDto) {
+//        List<ReviewResponseDto> reviews = reviewService.searchReviews(searchDto);
+//        return ResponseEntity.ok(reviews);
+//    }
+
     @GetMapping("/search")
-    public ResponseEntity<List<ReviewResponseDto>> searchReviews(@RequestBody ReviewSearchDto searchDto) {
+    public ResponseEntity<List<ReviewResponseDto>> searchReviews(
+            @RequestParam String keyword,
+            @RequestParam String searchType,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        ReviewSearchDto searchDto = ReviewSearchDto.builder()
+                .keyword(keyword)
+                .searchType(searchType)
+                .page(page)
+                .size(size)
+                .build();
         List<ReviewResponseDto> reviews = reviewService.searchReviews(searchDto);
         return ResponseEntity.ok(reviews);
     }

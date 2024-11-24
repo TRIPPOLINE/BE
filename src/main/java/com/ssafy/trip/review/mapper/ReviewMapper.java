@@ -13,6 +13,7 @@ import java.util.Map;
 @Mapper
 public interface ReviewMapper {
     List<ReviewResponseDto> searchReviews(@Param("keyword") String keyword,
+                                          @Param("searchType") String searchType,
                                           @Param("offset") int offset,
                                           @Param("size") int size);
 

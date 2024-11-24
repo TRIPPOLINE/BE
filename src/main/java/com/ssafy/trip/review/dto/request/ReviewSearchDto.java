@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ReviewSearchDto {
     private String keyword;
+    private String searchType; // "all", "title", "content"
     private int page;
     private int size;
-    private String sortBy; // "weight", "latest", "likes"
 }

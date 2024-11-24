@@ -82,7 +82,12 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public List<ReviewResponseDto> searchReviews(ReviewSearchDto searchDto) {
         int offset = (searchDto.getPage() - 1) * searchDto.getSize();
-        return reviewMapper.searchReviews(searchDto.getKeyword(), offset, searchDto.getSize());
+        return reviewMapper.searchReviews(
+                searchDto.getKeyword(),
+                searchDto.getSearchType(),
+                offset,
+                searchDto.getSize()
+        );
     }
 
     @Transactional

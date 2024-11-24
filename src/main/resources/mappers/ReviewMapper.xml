@@ -36,67 +36,48 @@
 
     <select id="searchReviews" resultType="ReviewResponseDto">
         SELECT r.review_no as reviewNo
-             , r.title as title
-             , r.content as content
-             , u.user_name as userName
-             , r.write_at as writeAt
-             , r.score as score
-             , s.spot_id as spotId
-             , (CASE
-                    WHEN MATCH(r.title) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 8
-            WHEN MATCH(r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 4
-            WHEN MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 1
-            END) AS relevance
+        , r.title as title
+        , r.content as content
+        , u.user_name as userName
+        , r.write_at as writeAt
+        , r.score as score
+        , s.spot_id as spotId
+        , (CASE
+        <choose>
+            <when test="searchType == 'title' or searchType == 'all'">
+                WHEN MATCH(r.title) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 8
+            </when>
+        </choose>
+        <choose>
+            <when test="searchType == 'content' or searchType == 'all'">
+                WHEN MATCH(r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 4
+            </when>
+        </choose>
+        WHEN MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 1
+        END) AS relevance
+
         FROM review r
-                 JOIN users u ON r.user_id = u.user_id
-                 JOIN spot s ON r.spot_id = s.spot_id
-        WHERE MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
-           OR MATCH(r.title, r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
+        JOIN users u ON r.user_id = u.user_id
+        JOIN spot s ON r.spot_id = s.spot_id
+
+        WHERE
+        <choose>
+            <when test="searchType == 'title'">
+                MATCH(r.title) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
+            </when>
+            <when test="searchType == 'content'">
+                MATCH(r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
+            </when>
+            <otherwise>
+                MATCH(r.title, r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
+                OR MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
+            </otherwise>
+        </choose>
+
         ORDER BY relevance DESC, r.write_at DESC
-            LIMIT #{offset}, #{size}
+        LIMIT #{offset}, #{size}
     </select>
-    <select id="searchReviewsByTitle" resultType="ReviewResponseDto">
-        SELECT r.review_no as reviewNo
-             , r.title as title
-             , r.content as content
-             , u.user_name as userName
-             , r.write_at as writeAt
-             , r.score as score
-             , s.spot_id as spotId
-             , (CASE
-                    WHEN MATCH(r.title) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 8
-            WHEN MATCH(r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 4
-            WHEN MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 1
-            END) AS relevance
-        FROM review r
-                 JOIN users u ON r.user_id = u.user_id
-                 JOIN spot s ON r.spot_id = s.spot_id
-        WHERE MATCH(r.title) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
-           OR MATCH(r.content, s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
-        ORDER BY relevance DESC, r.write_at DESC
-            LIMIT #{offset}, #{size}
-    </select>
-    <select id="searchReviewsByContent" resultType="ReviewResponseDto">
-        SELECT r.review_no as reviewNo
-             , r.title as title
-             , r.content as content
-             , u.user_name as userName
-             , r.write_at as writeAt
-             , r.score as score
-             , s.spot_id as spotId
-             , (CASE
-                    WHEN MATCH(r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 8
-            WHEN MATCH(r.title) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 4
-            WHEN MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 1
-            END) AS relevance
-        FROM review r
-                 JOIN users u ON r.user_id = u.user_id
-                 JOIN spot s ON r.spot_id = s.spot_id
-        WHERE MATCH(r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
-           OR MATCH(r.title, s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
-        ORDER BY relevance DESC, r.write_at DESC
-            LIMIT #{offset}, #{size}
-    </select>
+
 <!--    <select id="searchReviews" resultType="ReviewResponseDto">-->
 <!--        SELECT r.review_no as reviewNo-->
 <!--             , r.title as title-->
@@ -105,15 +86,18 @@
 <!--             , r.write_at as writeAt-->
 <!--             , r.score as score-->
 <!--             , s.spot_id as spotId-->
-<!--        FROM (-->
-<!--                 SELECT review_no, user_id, spot_id, title, content-->
-<!--                 FROM review-->
-<!--                 WHERE MATCH(title, content) AGAINST(#{keyword} IN BOOLEAN MODE)-->
-<!--                     LIMIT #{offset}, #{size}-->
-<!--             ) r-->
+<!--             , (CASE-->
+<!--                    WHEN MATCH(r.title) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 8-->
+<!--            WHEN MATCH(r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 4-->
+<!--            WHEN MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 1-->
+<!--            END) AS relevance-->
+<!--        FROM review r-->
 <!--                 JOIN users u ON r.user_id = u.user_id-->
 <!--                 JOIN spot s ON r.spot_id = s.spot_id-->
-<!--        WHERE MATCH(s.title, s.addr1) AGAINST(#{keyword} IN BOOLEAN MODE)-->
+<!--        WHERE MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)-->
+<!--           OR MATCH(r.title, r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)-->
+<!--        ORDER BY relevance DESC, r.write_at DESC-->
+<!--            LIMIT #{offset}, #{size}-->
 <!--    </select>-->
 
 
