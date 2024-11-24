@@ -28,4 +28,5 @@ public interface SpotMapper {
 			@Param("limit") int limit
 	);
 	SpotDto selectSpotById(int spotId);
+	List<SpotDto> selectSpotsFromUserPlan(String userId);
 }

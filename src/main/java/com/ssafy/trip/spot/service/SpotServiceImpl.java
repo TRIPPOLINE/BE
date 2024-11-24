@@ -74,6 +74,11 @@ public class SpotServiceImpl implements SpotService {
 		return spotMapper.selectSpotById(spotId);
   }
 
+	@Override
+	public List<SpotDto> selectSpotsFromUserPlan(String userId) {
+		return spotMapper.selectSpotsFromUserPlan(userId);
+	}
+
 	private String processKeyword(String keyword) {
 		if (keyword == null || keyword.trim().isEmpty()) {
 			return null;

@@ -106,4 +106,13 @@ public class SpotController {
 		}
 		return new ResponseEntity<>(spotDto, HttpStatus.OK);
 	}
+
+	@GetMapping("/user-spots")
+	public ResponseEntity<List<SpotDto>> getUserSpots(@RequestParam String userId) {
+		List<SpotDto> spots = spotService.selectSpotsFromUserPlan(userId);
+		if (spots.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(spots, HttpStatus.OK);
+	}
 }

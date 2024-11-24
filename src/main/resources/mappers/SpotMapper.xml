@@ -129,4 +129,18 @@
 		where spot_id = #{spotId}
 	</select>
 
+	<select id="selectSpotFromUserPlan" parameterType="string" resultType="SpotDto">
+		SELECT DISTINCT s.spot_id AS spotId, s.title, s.content_type_id AS contentTypeId,
+						s.area_code AS sidoCode, s.si_gun_gu_code AS sigunguCode,
+						s.first_image1 AS imagePath1, s.first_image2 AS imagePath2,
+						s.map_level AS mapLevel, s.latitude, s.longitude,
+						s.addr1 AS frontAddress, s.addr2 AS rearAddress
+		FROM trip.spot s
+		WHERE s.spot_id IN (
+			SELECT r.spot_id
+			FROM trip.review r
+					 JOIN trip.plan p ON r.user_id = p.user_id
+			WHERE p.user_id = #{userId}
+		)
+	</select>
 </mapper>
