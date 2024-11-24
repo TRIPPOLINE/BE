@@ -1,3 +1,12 @@
+-- 닉네임 칼럼 추가
+ALTER TABLE Profile
+    ADD COLUMN nickname VARCHAR(100);
+
+-- 사진 칼럼 추가
+ALTER TABLE Profile
+    ADD COLUMN photo VARCHAR(255);
+
+
 -- 리뷰의 제목 칼럼 추가--
 ALTER TABLE review ADD COLUMN title VARCHAR(255) NULL AFTER spot_id;
 

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface PlanService {
-
+    List<PlanDto> listPlan(Map<String, String> map);
     List<PlaceDto> listPlace(Map<String, String> map);
     void selectPlace(PlaceDto placeDto);
     void deletePlace(PlaceDto placeDto);

@@ -24,6 +24,16 @@ public class PlanController {
         this.planService = placeService;
     }
 
+    // 사용자의 플랜 리스트
+    @GetMapping("/listplan")
+    public ResponseEntity<?> listPlan(@RequestParam Map<String, String> map) {
+        List<PlanDto> list = planService.listPlan(map);
+        if (list == null || list.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
     // 해당 plan의 선택한 여행지 목록
     @GetMapping("/list")
     public ResponseEntity<?> listPlace(@RequestParam Map<String, String> map){
