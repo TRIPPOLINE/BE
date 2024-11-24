@@ -3,6 +3,7 @@ package com.ssafy.trip.review.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.trip.review.dto.ReviewDto;
+import com.ssafy.trip.review.dto.ReviewLikeDto;
 import com.ssafy.trip.review.dto.request.ReviewDeleteDto;
 import com.ssafy.trip.review.dto.request.ReviewSearchDto;
 import com.ssafy.trip.review.dto.request.ReviewUpdateDto;
@@ -74,11 +75,14 @@ public class ReviewController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-//    @GetMapping("/search")
-//    public ResponseEntity<List<ReviewResponseDto>> searchReviews(@RequestBody ReviewSearchDto searchDto) {
-//        List<ReviewResponseDto> reviews = reviewService.searchReviews(searchDto);
-//        return ResponseEntity.ok(reviews);
-//    }
+    @GetMapping
+    public ResponseEntity<List<ReviewResponseDto>> getReviews(
+            @RequestParam(defaultValue = "likes") String sortBy,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        List<ReviewResponseDto> reviews = reviewService.getReviews(sortBy, page, size);
+        return ResponseEntity.ok(reviews);
+    }
 
     @GetMapping("/search")
     public ResponseEntity<List<ReviewResponseDto>> searchReviews(
@@ -94,5 +98,12 @@ public class ReviewController {
                 .build();
         List<ReviewResponseDto> reviews = reviewService.searchReviews(searchDto);
         return ResponseEntity.ok(reviews);
+    }
+
+    @PostMapping("/like")
+    public ResponseEntity<ReviewLikeDto> toggleLike(@RequestBody ReviewLikeDto likeDto) {
+        log.info("좋아요 요청 : "+likeDto.toString());
+        ReviewLikeDto result = reviewService.toggleLike(likeDto.getReviewNo(), likeDto.getUserId());
+        return ResponseEntity.ok(result);
     }
 }

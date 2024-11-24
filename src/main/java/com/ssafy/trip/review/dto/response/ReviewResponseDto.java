@@ -1,7 +1,9 @@
 package com.ssafy.trip.review.dto.response;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -10,7 +12,12 @@ public class ReviewResponseDto {
     private String title;
     private String content;
     private String userName;
-    private Timestamp writeAt;
-    private Double score;
-    private int spotId; //todo:이 스팟의 다른 리뷰 보기 추가 기능
+    private LocalDateTime writeAt;
+    private BigDecimal score;
+    private int spotId;
+    private String spotTitle;
+    private String spotAddr1;
+    private int likeCount;
+    private boolean isLiked;
+    private List<String> photoUrls;
 }
