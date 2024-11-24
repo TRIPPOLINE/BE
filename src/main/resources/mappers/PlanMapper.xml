@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.trip.plan.mapper.PlanMapper">
 
+    <!-- 사용자의 plan 목록-->
+    <select id="listPlan" resultType="PlanDto">
+        SELECT user_id as userId, plan_id as planId, plan_at as planAt, trip_at as tripAt
+        from trip.plan
+        WHERE user_id = #{userId}
+    </select>
+
     <!-- 해당 plan의 선택한 여행지 목록 -->
     <select id="listPlace" resultType="PlaceDto">
         SELECT spot_id as spotId, plan_id as planId, visit_order as visitOrder

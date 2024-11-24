@@ -18,10 +18,17 @@
 		FROM trip.users
 		WHERE user_id = #{id}
 	</select>
-	
-	<update id="updateUser" parameterType="UserDto">
+
+    <update id="updateUser" parameterType="UserDto">
         UPDATE trip.users
-        SET user_name = #{name},user_password = #{password},email_id = #{id}, updated_at = NOW()
+        <set>
+            user_name = #{name},
+            <if test="password != null and password != ''">
+                user_password = #{password},
+            </if>
+            email_id = #{email},
+            updated_at = NOW()
+        </set>
         WHERE user_id = #{id}
     </update>
     

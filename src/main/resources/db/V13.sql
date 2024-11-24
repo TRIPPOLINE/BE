@@ -1,3 +1,14 @@
+
+use trip;
+
+-- 닉네임 칼럼 추가
+ALTER TABLE Profile
+    ADD COLUMN nickname VARCHAR(100);
+
+-- 사진 칼럼 추가
+ALTER TABLE Profile
+    ADD COLUMN photo VARCHAR(255);
+
 -- 리뷰의 제목 칼럼 추가--
 ALTER TABLE review ADD COLUMN title VARCHAR(255) NULL AFTER spot_id;
 
@@ -13,3 +24,4 @@ ALTER TABLE spot ADD FULLTEXT INDEX idx_fulltext_spot (title, addr1) WITH PARSER
 ALTER TABLE review ADD FULLTEXT INDEX idx_title (title);
 ALTER TABLE review ADD FULLTEXT INDEX idx_content (content);
 ALTER TABLE review ADD FULLTEXT INDEX idx_fulltext_review (title, content) WITH PARSER ngram;
+

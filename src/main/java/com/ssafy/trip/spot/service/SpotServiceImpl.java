@@ -68,6 +68,12 @@ public class SpotServiceImpl implements SpotService {
 		return spotMapper.selectSpotsInBounds(minLat, maxLat, minLng, maxLng, cursor, limit);
 	}
 
+
+	@Override
+	public SpotDto selectSpotById(int spotId) {
+		return spotMapper.selectSpotById(spotId);
+  }
+
 	private String processKeyword(String keyword) {
 		if (keyword == null || keyword.trim().isEmpty()) {
 			return null;

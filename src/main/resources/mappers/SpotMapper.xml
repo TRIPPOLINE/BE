@@ -112,4 +112,21 @@
 		LIMIT #{limit}
 	</select>
 
+	<select id="selectSpotById" parameterType="int" resultType="SpotDto">
+		select spot_id as spotId
+			 ,title as title
+			 ,content_type_id as contentTypeId
+			 ,area_code as sidoCode
+			 ,si_gun_gu_code as sigunguCode
+			 ,first_image1 as imagePath1
+			 ,first_image2 as imagePath2
+			 ,map_level as mapLevel
+			 ,latitude as latitude
+			 ,longitude as longitude
+			 ,addr1 as frontAddress
+			 ,addr2 as rearAddress
+		from trip.spot
+		where spot_id = #{spotId}
+	</select>
+
 </mapper>

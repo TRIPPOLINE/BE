@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.trip.profile.mapper.ProfileMapper">
+
+    <!-- 프로필 조회 -->
+    <select id="selectProfileById" parameterType="string" resultType="com.ssafy.trip.profile.dto.ProfileDto">
+        SELECT user_id as userId,
+               body,
+               nickname as nickName,
+               photo
+        FROM profile
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 프로필 생성 -->
+    <insert id="insertProfile" parameterType="com.ssafy.trip.profile.dto.ProfileDto">
+        INSERT INTO profile (user_id,body,nickname,photo)
+        VALUES (#{userId},#{body},#{nickName},#{photo})
+    </insert>
+
+    <!-- 프로필 수정 -->
+    <update id="modifyProfile" parameterType="com.ssafy.trip.profile.dto.ProfileDto">
+        UPDATE profile
+        SET body = #{body},
+            nickname = #{nickName},
+            photo = #{photo}
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- 프로필 사진 업데이트 -->
+    <update id="updateProfilePhoto">
+        UPDATE profile
+        SET photo = #{photoUrl}
+        WHERE user_id = #{userId}
+    </update>
+
+</mapper>
