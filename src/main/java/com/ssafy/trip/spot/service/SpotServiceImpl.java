@@ -1,8 +1,10 @@
 package com.ssafy.trip.spot.service;
 
+import java.util.Arrays;
 import java.util.List;
 
-import com.ssafy.trip.spot.dto.request.SpotFilterRequest;
+import com.ssafy.trip.spot.dto.request.SpotSearchRequestDto;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,8 +50,17 @@ public class SpotServiceImpl implements SpotService {
 	}
 
 	@Override
-	public List<SpotDto> selectSpotBySidoAndSigunguAndContentType(SpotFilterRequest spotFilterRequest) {
-		return spotMapper.selectSpotBySidoAndSigunguAndContentType(spotFilterRequest);
+	public List<SpotDto> selectSpotBySidoAndSigunguAndContentTypeAndKeyword(SpotSearchRequestDto spotSearchRequestDto) {
+		String processedKeyword = processKeyword(spotSearchRequestDto.getKeyword());
+
+		return spotMapper.selectSpotBySidoAndSigunguAndContentType(
+				SpotSearchRequestDto.builder()
+						.areaCode(spotSearchRequestDto.getAreaCode())
+						.siGunGuCode(spotSearchRequestDto.getSiGunGuCode())
+						.contentTypeId(spotSearchRequestDto.getContentTypeId())
+						.keyword(processedKeyword)
+						.build()
+		);
 	}
 
 	@Override
@@ -57,8 +68,18 @@ public class SpotServiceImpl implements SpotService {
 		return spotMapper.selectSpotsInBounds(minLat, maxLat, minLng, maxLng, cursor, limit);
 	}
 
+
 	@Override
 	public SpotDto selectSpotById(int spotId) {
 		return spotMapper.selectSpotById(spotId);
+  }
+
+	private String processKeyword(String keyword) {
+		if (keyword == null || keyword.trim().isEmpty()) {
+			return null;
+		}
+		return Arrays.stream(keyword.split("\\s+"))
+				.map(word -> "+" + word + "*")
+				.collect(Collectors.joining(" "));
 	}
 }

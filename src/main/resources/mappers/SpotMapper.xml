@@ -51,7 +51,7 @@
 	    where content_type_id = #{contentTypeId}
 	</select>
 	
-	<select id="selectSpotBySidoAndSigunguAndContentType" parameterType="SpotFilterRequest" resultType="SpotDto">
+	<select id="selectSpotBySidoAndSigunguAndContentType" parameterType="SpotSearchRequestDto" resultType="SpotDto">
 		select spot_id as spotId
 			  ,title as title
 			  ,content_type_id as contentTypeId
@@ -75,6 +75,9 @@
 	    <if test="contentTypeId!=null">
 	    	and content_type_id = #{contentTypeId}
 	    </if>
+		<if test="keyword != null and keyword != ''">
+			AND MATCH(title, addr1) AGAINST(#{keyword} IN BOOLEAN MODE)
+		</if>
 	</select>
 
 	<select id="selectSpotsInBounds" parameterType="map" resultType="SpotDto">
