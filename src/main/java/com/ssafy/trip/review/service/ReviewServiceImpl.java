@@ -2,6 +2,7 @@ package com.ssafy.trip.review.service;
 
 import com.ssafy.trip.infrastructure.image.ImageUploader;
 import com.ssafy.trip.review.dto.ReviewDto;
+import com.ssafy.trip.review.dto.ReviewLikeDto;
 import com.ssafy.trip.review.dto.request.ReviewDeleteDto;
 import com.ssafy.trip.review.dto.request.ReviewSearchDto;
 import com.ssafy.trip.review.dto.request.ReviewUpdateDto;
@@ -82,7 +83,36 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public List<ReviewResponseDto> searchReviews(ReviewSearchDto searchDto) {
         int offset = (searchDto.getPage() - 1) * searchDto.getSize();
-        return reviewMapper.searchReviews(searchDto.getKeyword(), offset, searchDto.getSize());
+        return reviewMapper.searchReviews(
+                searchDto.getKeyword(),
+                searchDto.getSearchType(),
+                offset,
+                searchDto.getSize()
+        );
+    }
+
+    @Override
+    public List<ReviewResponseDto> getReviews(String sortBy, int page, int size) {
+        int offset = (page - 1) * size;
+        return reviewMapper.getReviews(sortBy, offset, size);
+    }
+
+    @Override
+    @Transactional
+    public ReviewLikeDto toggleLike(int reviewNo, String userId) {
+        ReviewLikeDto likeStatus = reviewMapper.getLikeStatus(reviewNo, userId);
+
+        if (likeStatus.isLiked()) {
+            reviewMapper.deleteLike(reviewNo, userId);
+        } else {
+            reviewMapper.insertLike(reviewNo, userId);
+        }
+
+        int newLikeCount = reviewMapper.getLikeCount(reviewNo);
+        likeStatus.setLikeCount(newLikeCount);
+        likeStatus.setLiked(!likeStatus.isLiked());
+
+        return likeStatus;
     }
 
     @Transactional

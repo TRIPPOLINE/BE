@@ -1,6 +1,7 @@
 package com.ssafy.trip.review.service;
 
 import com.ssafy.trip.review.dto.ReviewDto;
+import com.ssafy.trip.review.dto.ReviewLikeDto;
 import com.ssafy.trip.review.dto.request.ReviewDeleteDto;
 import com.ssafy.trip.review.dto.request.ReviewSearchDto;
 import com.ssafy.trip.review.dto.request.ReviewUpdateDto;
@@ -18,4 +19,6 @@ public interface ReviewService {
     void modifyReview(ReviewUpdateDto reviewDto);
     void deleteReview(ReviewDeleteDto reviewDeleteDto);
     public List<ReviewResponseDto> searchReviews(ReviewSearchDto searchDto);
+    public List<ReviewResponseDto> getReviews(String sortBy, int page, int size);
+    public ReviewLikeDto toggleLike(int reviewNo, String userId);
 }

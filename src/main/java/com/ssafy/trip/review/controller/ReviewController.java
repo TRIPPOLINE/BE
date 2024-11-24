@@ -3,12 +3,14 @@ package com.ssafy.trip.review.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.trip.review.dto.ReviewDto;
+import com.ssafy.trip.review.dto.ReviewLikeDto;
 import com.ssafy.trip.review.dto.request.ReviewDeleteDto;
 import com.ssafy.trip.review.dto.request.ReviewSearchDto;
 import com.ssafy.trip.review.dto.request.ReviewUpdateDto;
 import com.ssafy.trip.review.dto.request.ReviewWriteDto;
 import com.ssafy.trip.review.dto.response.ReviewResponseDto;
 import com.ssafy.trip.review.service.ReviewService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @PreAuthorize("hasRole('ROLE_USER')")
 @RestController
 @RequestMapping("/api/review")
@@ -72,9 +75,35 @@ public class ReviewController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<ReviewResponseDto>> getReviews(
+            @RequestParam(defaultValue = "likes") String sortBy,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        List<ReviewResponseDto> reviews = reviewService.getReviews(sortBy, page, size);
+        return ResponseEntity.ok(reviews);
+    }
+
     @GetMapping("/search")
-    public ResponseEntity<List<ReviewResponseDto>> searchReviews(@RequestBody ReviewSearchDto searchDto) {
+    public ResponseEntity<List<ReviewResponseDto>> searchReviews(
+            @RequestParam String keyword,
+            @RequestParam String searchType,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        ReviewSearchDto searchDto = ReviewSearchDto.builder()
+                .keyword(keyword)
+                .searchType(searchType)
+                .page(page)
+                .size(size)
+                .build();
         List<ReviewResponseDto> reviews = reviewService.searchReviews(searchDto);
         return ResponseEntity.ok(reviews);
+    }
+
+    @PostMapping("/like")
+    public ResponseEntity<ReviewLikeDto> toggleLike(@RequestBody ReviewLikeDto likeDto) {
+        log.info("좋아요 요청 : "+likeDto.toString());
+        ReviewLikeDto result = reviewService.toggleLike(likeDto.getReviewNo(), likeDto.getUserId());
+        return ResponseEntity.ok(result);
     }
 }
