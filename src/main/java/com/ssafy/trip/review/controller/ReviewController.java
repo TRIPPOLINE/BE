@@ -9,6 +9,7 @@ import com.ssafy.trip.review.dto.request.ReviewUpdateDto;
 import com.ssafy.trip.review.dto.request.ReviewWriteDto;
 import com.ssafy.trip.review.dto.response.ReviewResponseDto;
 import com.ssafy.trip.review.service.ReviewService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @PreAuthorize("hasRole('ROLE_USER')")
 @RestController
 @RequestMapping("/api/review")

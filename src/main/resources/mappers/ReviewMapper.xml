@@ -43,15 +43,15 @@
              , r.score as score
              , s.spot_id as spotId
              , (CASE
-            WHEN MATCH(r.title) AGAINST(#{keyword}) THEN 8
-            WHEN MATCH(r.content) AGAINST(#{keyword}) THEN 4
-            WHEN MATCH(s.title, s.addr1) AGAINST(#{keyword}) THEN 1
+                    WHEN MATCH(r.title) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 8
+            WHEN MATCH(r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 4
+            WHEN MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 1
             END) AS relevance
         FROM review r
                  JOIN users u ON r.user_id = u.user_id
                  JOIN spot s ON r.spot_id = s.spot_id
-        WHERE MATCH(s.title, s.addr1) AGAINST(#{keyword} IN BOOLEAN MODE)
-           OR MATCH(r.title, r.content) AGAINST(#{keyword} IN BOOLEAN MODE)
+        WHERE MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
+           OR MATCH(r.title, r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
         ORDER BY relevance DESC, r.write_at DESC
             LIMIT #{offset}, #{size}
     </select>
