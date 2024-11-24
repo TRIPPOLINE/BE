@@ -45,35 +45,32 @@
         , (CASE
         <choose>
             <when test="searchType == 'title' or searchType == 'all'">
-                WHEN MATCH(r.title) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 8
+                WHEN MATCH(r.title) AGAINST(CONCAT('+', REPLACE(#{keyword}, ' ', ' +')) IN BOOLEAN MODE) THEN 6
             </when>
         </choose>
         <choose>
             <when test="searchType == 'content' or searchType == 'all'">
-                WHEN MATCH(r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 4
+                WHEN MATCH(r.content) AGAINST(CONCAT('+', REPLACE(#{keyword}, ' ', ' +')) IN BOOLEAN MODE) THEN 6
             </when>
         </choose>
-        WHEN MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE) THEN 1
+        WHEN MATCH(s.title, s.addr1) AGAINST(CONCAT('+', REPLACE(#{keyword}, ' ', ' +')) IN BOOLEAN MODE) THEN 1
         END) AS relevance
-
         FROM review r
         JOIN users u ON r.user_id = u.user_id
         JOIN spot s ON r.spot_id = s.spot_id
-
         WHERE
         <choose>
             <when test="searchType == 'title'">
-                MATCH(r.title) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
+                MATCH(r.title) AGAINST(CONCAT('+', REPLACE(#{keyword}, ' ', ' +'), '*') IN BOOLEAN MODE)
             </when>
             <when test="searchType == 'content'">
-                MATCH(r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
+                MATCH(r.content) AGAINST(CONCAT('+', REPLACE(#{keyword}, ' ', ' +'), '*') IN BOOLEAN MODE)
             </when>
             <otherwise>
-                MATCH(r.title, r.content) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
-                OR MATCH(s.title, s.addr1) AGAINST(#{keyword} IN NATURAL LANGUAGE MODE)
+                MATCH(r.title, r.content) AGAINST(CONCAT('+', REPLACE(#{keyword}, ' ', ' +'), '*') IN BOOLEAN MODE)
+                OR MATCH(s.title, s.addr1) AGAINST(CONCAT('+', REPLACE(#{keyword}, ' ', ' +'), '*') IN BOOLEAN MODE)
             </otherwise>
         </choose>
-
         ORDER BY relevance DESC, r.write_at DESC
         LIMIT #{offset}, #{size}
     </select>
