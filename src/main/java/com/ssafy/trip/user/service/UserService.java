@@ -15,4 +15,6 @@ public interface UserService {
 	List<UserDto> listUser(Map<String, String> map) ;
 	UserDto selectUser(String user_id) ;
 	void deleteUser(String userid) ;
+	public Map<String, String> resetPassword(String userId, String userName, String email);
+
 }

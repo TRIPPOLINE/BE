@@ -52,32 +52,39 @@
 	</select>
 
 	<select id="selectSpotBySidoAndSigunguAndContentType" parameterType="SpotSearchRequestDto" resultType="SpotDto">
-		select spot_id as spotId
-		,title as title
-		,content_type_id as contentTypeId
-		,area_code as sidoCode
-		,si_gun_gu_code as sigunguCode
-		,first_image1 as imagePath1
-		,first_image2 as imagePath2
-		,map_level as mapLevel
-		,latitude as latitude
-		,longitude as longitude
-		,addr1 as frontAddress
-		,addr2 as rearAddress
-		from trip.spot
-		where 1=1
-		<if test="areaCode!=null">
-			and area_code = #{areaCode}
-		</if>
-		<if test="siGunGuCode!=null">
-			and si_gun_gu_code = #{siGunGuCode}
-		</if>
-		<if test="contentTypeId!=null">
-			and content_type_id = #{contentTypeId}
-		</if>
-		<if test="keyword != null and keyword != ''">
-			AND MATCH(title, addr1) AGAINST(#{keyword} IN BOOLEAN MODE)
-		</if>
+		SELECT
+			s.spot_id AS spotId,
+			s.title AS title,
+			s.content_type_id AS contentTypeId,
+			s.area_code AS sidoCode,
+			s.si_gun_gu_code AS sigunguCode,
+			s.first_image1 AS imagePath1,
+			s.first_image2 AS imagePath2,
+			s.map_level AS mapLevel,
+			s.latitude AS latitude,
+			s.longitude AS longitude,
+			s.addr1 AS frontAddress,
+			s.addr2 AS rearAddress,
+			COALESCE(sa.avg_score, 0) AS avgScore,
+			COALESCE(sa.review_count, 0) AS reviewCount
+
+		FROM
+			trip.spot s LEFT JOIN trip.spotavgscore sa ON s.spot_id = sa.spot_id
+
+		WHERE
+			1=1
+			<if test="areaCode != null">
+				AND s.area_code = #{areaCode}
+			</if>
+			<if test="siGunGuCode != null">
+				AND s.si_gun_gu_code = #{siGunGuCode}
+			</if>
+			<if test="contentTypeId != null">
+				AND s.content_type_id = #{contentTypeId}
+			</if>
+			<if test="keyword != null and keyword != ''">
+				AND MATCH(s.title, s.addr1) AGAINST(#{keyword} IN BOOLEAN MODE)
+			</if>
 	</select>
 
 	<select id="selectSpotsInBounds" parameterType="map" resultType="SpotDto">
