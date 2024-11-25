@@ -36,4 +36,18 @@
         DELETE FROM trip.users
         WHERE user_id = #{id}
     </delete>
+
+    <select id="findUserForPasswordReset" resultType="UserDto">
+        SELECT * FROM users
+        WHERE user_id = #{userId}
+          AND user_name = #{userName}
+          AND email_id = #{email}
+    </select>
+
+    <update id="updatePassword">
+        UPDATE users
+        SET user_password = #{password},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE user_id = #{userId}
+    </update>
 </mapper>

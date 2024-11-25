@@ -1,4 +1,6 @@
 package com.ssafy.trip.user.service;
+import java.util.HashMap;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.ssafy.trip.auth.dto.JoinDto;
 import java.sql.Date;
@@ -63,6 +65,27 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(String userid) {
 		userMapper.deleteUser(userid);
+	}
+
+	@Override
+	public Map<String, String> resetPassword(String userId, String userName, String email) {
+		UserDto user = userMapper.findUserForPasswordReset(userId, userName, email);
+		if (user == null) {
+			throw new RuntimeException("일치하는 사용자 정보가 없습니다.");
+		}
+
+		// 임시 비번 위한 난수 생성 
+		String temporaryPassword = RandomStringUtils.randomAlphanumeric(10);
+
+		// 비번 암호화 및 업데이트
+		String encodedPassword = bCyrptPassowrdEncoder.encode(temporaryPassword);
+		userMapper.updatePassword(userId, encodedPassword);
+
+		Map<String, String> result = new HashMap<>();
+		result.put("temporaryPassword", temporaryPassword);
+		result.put("message", "임시 비밀번호가 생성되었습니다. 로그인 후 반드시 비밀번호를 변경해주세요.");
+
+		return result;
 	}
 
 }

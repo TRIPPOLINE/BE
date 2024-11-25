@@ -1,6 +1,7 @@
 package com.ssafy.trip.user.controller;
 
 import com.ssafy.trip.auth.dto.JoinDto;
+import com.ssafy.trip.user.dto.request.PasswordResetRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -89,4 +90,18 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@PostMapping("/password/reset")
+	public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest request) {
+		try {
+			Map<String, String> result = userService.resetPassword(
+					request.getUserId(),
+					request.getUserName(),
+					request.getEmail()
+			);
+			return ResponseEntity.ok(result);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest()
+					.body(Map.of("error", e.getMessage()));
+		}
+	}
 }
