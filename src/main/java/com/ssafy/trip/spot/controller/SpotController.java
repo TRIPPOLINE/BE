@@ -25,10 +25,10 @@ import com.ssafy.trip.spot.service.SpotService;
 @PreAuthorize("hasRole('ROLE_USER')")
 public class SpotController {
 	private final SpotService spotService;
-	
+
 	public SpotController(SpotService spotService) {
 		this.spotService = spotService;
-    }
+	}
 
 	@GetMapping("/sidos")
 	public ResponseEntity<?> selectAllSidos(){
@@ -81,22 +81,28 @@ public class SpotController {
 	}
 
 	@GetMapping("/currentLocation")
-	public ResponseEntity<SearchSpotInBoundResponse> nearbySearchSpot(@RequestBody SearchSpotInBoundRequest request){
+	public ResponseEntity<List<SpotDto>> nearbySearchSpot(
+			@RequestParam double minLatitude,
+			@RequestParam double maxLatitude,
+			@RequestParam double minLongitude,
+			@RequestParam double maxLongitude) {
 		List<SpotDto> nearbySpots = spotService.selectSpotsInBounds(
-				request.getMinLatitude(),
-				request.getMaxLatitude(),
-				request.getMinLongitude(),
-				request.getMaxLongitude(),
-				request.getCursor(),
-				request.getLimit()
-		);
+				minLatitude,
+				maxLatitude,
+				minLongitude,
+				maxLongitude);
 
-		Integer nextCursor = nearbySpots.isEmpty()?null:nearbySpots.get(nearbySpots.size()-1).getSpotId();
+		if (nearbySpots.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 
-		SearchSpotInBoundResponse response = new SearchSpotInBoundResponse(nearbySpots, nextCursor);
-
-		return ResponseEntity.ok(response);
+		return new ResponseEntity<>(nearbySpots, HttpStatus.OK);
 	}
+	//        Integer nextCursor = nearbySpots.isEmpty() ? null : nearbySpots.get(nearbySpots.size()-1).getSpotId();
+//
+//        SearchSpotInBoundResponse response = new SearchSpotInBoundResponse(nearbySpots, nextCursor);
+//
+//        return ResponseEntity.ok(response);
 
 	@GetMapping("/{spotId}")
 	public ResponseEntity<?> selectSpotById(@PathVariable int spotId) {
@@ -116,3 +122,4 @@ public class SpotController {
 		return new ResponseEntity<>(spots, HttpStatus.OK);
 	}
 }
+

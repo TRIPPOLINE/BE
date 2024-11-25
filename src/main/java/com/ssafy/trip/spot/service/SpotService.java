@@ -21,9 +21,7 @@ public interface SpotService {
 			@Param("minLat") double minLat,
 			@Param("maxLat") double maxLat,
 			@Param("minLng") double minLng,
-			@Param("maxLng") double maxLng,
-			@Param("cursor") Integer cursor,
-			@Param("limit") int limit
+			@Param("maxLng") double maxLng
 	);
 	SpotDto selectSpotById(int spotId);
 	List<SpotDto> selectSpotsFromUserPlan(String userId);
