@@ -1,5 +1,6 @@
 package com.ssafy.trip.spot.dto;
 
+import java.math.BigDecimal;
 import lombok.Data;
 
 @Data
@@ -16,4 +17,6 @@ public class SpotDto {
     private double longitude;
     private String frontAddress;
     private String rearAddress;
+    private BigDecimal avgScore;
+    private int reviewCount;
 }
