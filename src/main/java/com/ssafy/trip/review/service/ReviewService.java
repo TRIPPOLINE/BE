@@ -16,9 +16,13 @@ public interface ReviewService {
     List<ReviewDto> listUserReview(Map<String, String> map);
     List<ReviewDto> listSpotReview(Map<String, String> map);
     void writeReview(ReviewWriteDto reviewWriteDto, List<MultipartFile> photos);
-    void modifyReview(ReviewUpdateDto reviewDto);
+    // 리뷰 수정 메서드 시그니처 변경
+    void modifyReview(ReviewUpdateDto reviewDto, List<MultipartFile> newPhotos);
     void deleteReview(ReviewDeleteDto reviewDeleteDto);
-    public List<ReviewResponseDto> searchReviews(ReviewSearchDto searchDto);
-    public List<ReviewResponseDto> getReviews(String sortBy, int page, int size);
-    public ReviewLikeDto toggleLike(int reviewNo, String userId);
+    List<ReviewResponseDto> searchReviews(ReviewSearchDto searchDto);
+    List<ReviewResponseDto> getReviews(String sortBy, int page, int size);
+    ReviewLikeDto toggleLike(int reviewNo, String userId);
+    // 리뷰 사진 관련 메서드 추가
+    void deleteReviewPhoto(int reviewNo, String photoUrl);
+    void uploadReviewPhotos(List<MultipartFile> photos, int reviewNo);
 }

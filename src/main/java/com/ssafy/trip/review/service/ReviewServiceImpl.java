@@ -70,9 +70,23 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
 
+    @Transactional
     @Override
-    public void modifyReview(ReviewUpdateDto reviewDto) {
+    public void modifyReview(ReviewUpdateDto reviewDto, List<MultipartFile> newPhotos) {
+        // 기본 리뷰 정보 업데이트
         reviewMapper.modifyReview(reviewDto);
+
+        // 삭제할 사진들 처리
+        if (reviewDto.getDeletePhotoUrls() != null) {
+            for (String photoUrl : reviewDto.getDeletePhotoUrls()) {
+                reviewMapper.deleteReviewPhoto(reviewDto.getReviewNo(), photoUrl);
+            }
+        }
+
+        // 새로운 사진들 업로드
+        if (newPhotos != null) {
+            uploadReviewPhotos(newPhotos, reviewDto.getReviewNo());
+        }
     }
 
     @Override
@@ -123,5 +137,9 @@ public class ReviewServiceImpl implements ReviewService{
                 reviewMapper.insertReviewPhoto(reviewNo, photoUrl);
             }
         }
+    }
+    @Transactional
+    public void deleteReviewPhoto(int reviewNo, String photoUrl) {
+        reviewMapper.deleteReviewPhoto(reviewNo, photoUrl);
     }
 }
