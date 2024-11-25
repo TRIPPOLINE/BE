@@ -18,11 +18,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@PreAuthorize("hasRole('ROLE_USER')")
+//@PreAuthorize("hasRole('ROLE_USER')")
 @RestController
 @RequestMapping("/api/review")
 public class ReviewController {
@@ -36,9 +37,11 @@ public class ReviewController {
 
     // 해당 사용자가 작성한 리뷰 목록
     @GetMapping("/userlist")
-    public ResponseEntity<?> listUserReview(@RequestParam Map<String, String> map){
-        List<ReviewDto> list = reviewService.listUserReview(map);
-        if(list == null || list.isEmpty()){
+    public ResponseEntity<?> listUserReview(@RequestParam String userId) {
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("userId", userId);
+        List<ReviewDto> list = reviewService.listUserReview(paramMap);
+        if(list == null || list.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
