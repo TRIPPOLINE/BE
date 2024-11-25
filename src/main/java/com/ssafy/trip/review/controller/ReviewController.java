@@ -66,8 +66,11 @@ public class ReviewController {
 
     // 리뷰 수정
     @PostMapping("/modify")
-    public ResponseEntity<?> modifyReview(@RequestBody ReviewUpdateDto ReviewUpdateDto){
-        reviewService.modifyReview(ReviewUpdateDto);
+    public ResponseEntity<?> modifyReview(
+            @RequestPart String reviewUpdateJson,
+            @RequestPart(required = false) List<MultipartFile> newPhotos) throws JsonProcessingException {
+        ReviewUpdateDto reviewUpdateDto = new ObjectMapper().readValue(reviewUpdateJson, ReviewUpdateDto.class);
+        reviewService.modifyReview(reviewUpdateDto, newPhotos);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -76,6 +79,13 @@ public class ReviewController {
     public ResponseEntity<?> deleteReview(@RequestBody ReviewDeleteDto reviewDeleteDto){
         reviewService.deleteReview(reviewDeleteDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    @PostMapping("/deletePhoto")
+    public ResponseEntity<?> deleteReviewPhoto(@RequestBody Map<String, Object> request) {
+        int reviewNo = (Integer) request.get("reviewNo");
+        String photoUrl = (String) request.get("photoUrl");
+        reviewService.deleteReviewPhoto(reviewNo, photoUrl);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping

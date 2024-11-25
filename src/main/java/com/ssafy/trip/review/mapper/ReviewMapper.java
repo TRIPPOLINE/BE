@@ -35,5 +35,9 @@ public interface ReviewMapper {
     void writeReview(ReviewWriteDto reviewWriteDto);
     void modifyReview(ReviewUpdateDto reviewDto);
     void deleteReview(ReviewDeleteDto reviewDeleteDto);
+
+    // 리뷰 사진 관련 메서드 추가
     void insertReviewPhoto(@Param("reviewNo") int reviewNo, @Param("photoUrl") String photoUrl);
+    void deleteReviewPhoto(@Param("reviewNo") int reviewNo, @Param("photoUrl") String photoUrl);
+    List<String> getReviewPhotos(@Param("reviewNo") int reviewNo);
 }
