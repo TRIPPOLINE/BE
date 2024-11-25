@@ -24,7 +24,9 @@ public interface SpotMapper {
 			@Param("minLat") double minLat,
 			@Param("maxLat") double maxLat,
 			@Param("minLng") double minLng,
-			@Param("maxLng") double maxLng
+			@Param("maxLng") double maxLng,
+			@Param("contentTypeId") Integer contentTypeId,
+			@Param("keyword") String keyword
 	);
 	SpotDto selectSpotById(int spotId);
 	List<SpotDto> selectSpotsFromUserPlan(String userId);

@@ -85,24 +85,25 @@ public class SpotController {
 			@RequestParam double minLatitude,
 			@RequestParam double maxLatitude,
 			@RequestParam double minLongitude,
-			@RequestParam double maxLongitude) {
-		List<SpotDto> nearbySpots = spotService.selectSpotsInBounds(
-				minLatitude,
-				maxLatitude,
-				minLongitude,
-				maxLongitude);
+			@RequestParam double maxLongitude,
+			@RequestParam(required = false) Integer contentTypeId,
+			@RequestParam(required = false, defaultValue = "") String keyword)  {
 
-		if (nearbySpots.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+			List<SpotDto> nearbySpots = spotService.selectSpotsInBounds(
+					minLatitude,
+					maxLatitude,
+					minLongitude,
+					maxLongitude,
+					contentTypeId,
+					keyword
+			);
 
-		return new ResponseEntity<>(nearbySpots, HttpStatus.OK);
+			if (nearbySpots.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+
+			return new ResponseEntity<>(nearbySpots, HttpStatus.OK);
 	}
-	//        Integer nextCursor = nearbySpots.isEmpty() ? null : nearbySpots.get(nearbySpots.size()-1).getSpotId();
-//
-//        SearchSpotInBoundResponse response = new SearchSpotInBoundResponse(nearbySpots, nextCursor);
-//
-//        return ResponseEntity.ok(response);
 
 	@GetMapping("/{spotId}")
 	public ResponseEntity<?> selectSpotById(@PathVariable int spotId) {

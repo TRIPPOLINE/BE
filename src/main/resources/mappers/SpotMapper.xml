@@ -96,6 +96,12 @@
 		FROM spot
 		WHERE latitude BETWEEN #{minLat} AND #{maxLat}
 		  AND longitude BETWEEN #{minLng} AND #{maxLng}
+		<if test="contentTypeId!=null">
+			and content_type_id = #{contentTypeId}
+		</if>
+		<if test="keyword != null and keyword != ''">
+			AND MATCH(title, addr1) AGAINST(#{keyword} IN BOOLEAN MODE)
+		</if>
 	</select>
 
 	<select id="selectSpotById" parameterType="int" resultType="SpotDto">

@@ -64,8 +64,8 @@ public class SpotServiceImpl implements SpotService {
 	}
 
 	@Override
-	public List<SpotDto> selectSpotsInBounds(double minLat, double maxLat, double minLng, double maxLng) {
-		return spotMapper.selectSpotsInBounds(minLat, maxLat, minLng, maxLng);
+	public List<SpotDto> selectSpotsInBounds(double minLat, double maxLat, double minLng, double maxLng, Integer contentTypeId, String keyword) {
+		return spotMapper.selectSpotsInBounds(minLat, maxLat, minLng, maxLng, contentTypeId, keyword);
 	}
 
 	@Override
