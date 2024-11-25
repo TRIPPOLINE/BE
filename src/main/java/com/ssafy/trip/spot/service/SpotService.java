@@ -24,4 +24,5 @@ public interface SpotService {
 			@Param("maxLng") double maxLng
 	);
 	SpotDto selectSpotById(int spotId);
+	List<SpotDto> selectSpotsFromUserPlan(String userId);
 }
