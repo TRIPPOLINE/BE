@@ -49,19 +49,19 @@ public class ReviewServiceImpl implements ReviewService{
         log.info("유저 id : "+ reviewWriteDto.getUserId());
         log.info("유저 존재 여부 : "+userMapper.selectUser(reviewWriteDto.getUserId()).toString());
 
-        // ReviewWriteDto에서 ReviewDto로 변환 (title 포함)
-        ReviewDto reviewDto = ReviewDto.builder()
-                .userId(reviewWriteDto.getUserId())
-                .spotId(reviewWriteDto.getSpotId())
-                .title(reviewWriteDto.getTitle())  // title 추가
-                .content(reviewWriteDto.getContent())
-                .score(reviewWriteDto.getScore())
-                .writeAt(LocalDateTime.now())
-                .build();
+//        // ReviewWriteDto에서 ReviewDto로 변환 (title 포함)
+//        ReviewDto reviewDto = ReviewDto.builder()
+//                .userId(reviewWriteDto.getUserId())
+//                .spotId(reviewWriteDto.getSpotId())
+//                .title(reviewWriteDto.getTitle())  // title 추가
+//                .content(reviewWriteDto.getContent())
+//                .score(reviewWriteDto.getScore())
+//                .writeAt(LocalDateTime.now())
+//                .build();
 
         //리뷰 게시
-        reviewMapper.writeReview(reviewDto);  // reviewNo가 자동 생성됨
-        int reviewNo = reviewDto.getReviewNo();  // 삽입 후 reviewNo 확인
+        reviewMapper.writeReview(reviewWriteDto);  // reviewNo가 자동 생성됨
+        int reviewNo = reviewWriteDto.getReviewNo();  // 삽입 후 reviewNo 확인
 
         log.info("등록된 리뷰 번호 : "+reviewNo);
 

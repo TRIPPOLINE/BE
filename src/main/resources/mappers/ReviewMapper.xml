@@ -18,20 +18,28 @@
         </collection>
     </resultMap>
 
-    <select id="listUserReview" resultType="ReviewDto">
-        SELECT user_id as userId, spot_id as spotId, content, score, write_at as writeAt, trip_at as tripAt
-        from trip.review
-        where user_id = #{userId}
+    <select id="listUserReview" resultMap="ReviewResultMap">
+        SELECT r.review_no, r.title, r.content, r.user_id, r.write_at, r.score, r.spot_id,
+               s.title AS spot_title, s.addr1 AS spot_addr1,
+               COUNT(DISTINCT rl.id) as like_count,
+               rp.photo_url
+        FROM trip.review r
+                 JOIN spot s ON r.spot_id = s.spot_id
+                 LEFT JOIN reviewlikes rl ON r.review_no = rl.review_no
+                 LEFT JOIN reviewphotos rp ON r.review_no = rp.review_no
+        WHERE r.user_id = #{userId}
+        GROUP BY r.review_no, rp.id
+        ORDER BY r.write_at DESC
     </select>
     <select id="listSpotReview" resultType="ReviewDto">
-        SELECT user_id as userId, spot_id as spotId, content, score, write_at as writeAt, trip_at as tripAt
+        SELECT review_no as reviewNo,user_id as userId, spot_id as spotId, content, score, write_at as writeAt
         from trip.review
         where spot_id={spotId}
     </select>
 
-    <insert id="writeReview" parameterType="ReviewDto" useGeneratedKeys="true" keyProperty="reviewNo">
+    <insert id="writeReview" parameterType="ReviewWriteDto" useGeneratedKeys="true" keyProperty="reviewNo">
         INSERT INTO trip.review (user_id, spot_id, title, content, score, write_at)
-        VALUES (#{userId}, #{spotId}, #{title}, #{content}, #{score}, #{writeAt})
+        VALUES (#{userId}, #{spotId}, #{title}, #{content}, #{score}, now())
     </insert>
 
 

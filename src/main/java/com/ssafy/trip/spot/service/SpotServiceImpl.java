@@ -80,7 +80,7 @@ public class SpotServiceImpl implements SpotService {
 	}
 
 
-	}
+
 
 	private String processKeyword(String keyword) {
 		if (keyword == null || keyword.trim().isEmpty()) {

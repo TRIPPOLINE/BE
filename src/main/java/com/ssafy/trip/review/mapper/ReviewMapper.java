@@ -4,6 +4,7 @@ import com.ssafy.trip.review.dto.ReviewDto;
 import com.ssafy.trip.review.dto.ReviewLikeDto;
 import com.ssafy.trip.review.dto.request.ReviewDeleteDto;
 import com.ssafy.trip.review.dto.request.ReviewUpdateDto;
+import com.ssafy.trip.review.dto.request.ReviewWriteDto;
 import com.ssafy.trip.review.dto.response.ReviewResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -31,7 +32,7 @@ public interface ReviewMapper {
 
     List<ReviewDto> listUserReview(Map<String, String> map);
     List<ReviewDto> listSpotReview(Map<String, String> map);
-    void writeReview(ReviewDto reviewDto);
+    void writeReview(ReviewWriteDto reviewWriteDto);
     void modifyReview(ReviewUpdateDto reviewDto);
     void deleteReview(ReviewDeleteDto reviewDeleteDto);
     void insertReviewPhoto(@Param("reviewNo") int reviewNo, @Param("photoUrl") String photoUrl);

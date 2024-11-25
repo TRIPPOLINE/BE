@@ -1,0 +1,1 @@
+ALTER TABLE trip.review DROP COLUMN trip_at;
