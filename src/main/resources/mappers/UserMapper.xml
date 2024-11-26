@@ -50,4 +50,10 @@
             updated_at = CURRENT_TIMESTAMP
         WHERE user_id = #{userId}
     </update>
+
+    <select id="selectUserById" resultType="UserDto">
+        SELECT user_id as id, user_name as name, user_password as password, email_id, role_id as roleId
+        FROM trip.users
+        WHERE user_id = #{userId}
+    </select>
 </mapper>

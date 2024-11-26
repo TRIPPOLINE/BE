@@ -1,6 +1,9 @@
 package com.ssafy.trip.user.service;
 import java.util.HashMap;
+
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.ssafy.trip.auth.dto.JoinDto;
 import java.sql.Date;
@@ -9,21 +12,26 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.trip.user.dto.UserDto;
 import com.ssafy.trip.user.mapper.UserMapper;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private final UserMapper userMapper;
 	private final BCryptPasswordEncoder bCyrptPassowrdEncoder;
+//    @Autowired
+//    private BCryptPasswordEncoder passwordEncoder;
 
 	public UserServiceImpl(UserMapper userMapper) {
 		super();
 		this.userMapper = userMapper;
-        this.bCyrptPassowrdEncoder = new BCryptPasswordEncoder();;
+        this.bCyrptPassowrdEncoder = new BCryptPasswordEncoder();
     }
 
 	@Override
@@ -88,4 +96,37 @@ public class UserServiceImpl implements UserService {
 		return result;
 	}
 
+	@Override
+	@Transactional
+	public void updatePassword(String userId, String currentPassword, String newPassword) {
+		log.info("현재 비밀번호 : "+currentPassword);
+		log.info("변경 비밀번호 : "+newPassword);
+
+
+		if(checkCurrentPasswordValidation(userId, currentPassword)){
+			String encodedNewPassword = bCyrptPassowrdEncoder.encode(newPassword);
+			userMapper.updatePassword(userId, encodedNewPassword);
+			log.info("비밀 번호가 정상적으로 업데이트됨!!!!!!!!!!!!!!!!!!!!!!!!!!! = "+encodedNewPassword);
+			return;
+		}
+		log.info("사용자 id 또는 pw가 일치하지 않아서 비밀번호 업데이트 불가");
+	}
+
+	private boolean checkCurrentPasswordValidation(String userId, String currentPassword){
+		//검증하려는 사용자 데이터 객체
+		UserDto userDto = userMapper.selectUserById(userId);
+
+		//사용자 현재 비밀번호 일치 검증
+		if(matchesPassword(currentPassword, userDto.getPassword())){
+			log.info("비번 업데이트 하려는 사용자의 id : "+userId);
+			return true;
+		}
+		
+		log.info("비밀 번호 업데이트 하려는 사용자 확인 되지 않음");
+		return false;
+	}
+
+	private boolean matchesPassword(String originPassword, String encodedPassword){
+		return bCyrptPassowrdEncoder.matches(originPassword, encodedPassword);
+	}
 }

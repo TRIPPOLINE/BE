@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
     private final JwtUtil jwtUtil;
-    private final PasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder;
     private final UserMapper userMapper;
     private final RefreshMapper refreshMapper;
 
@@ -51,6 +52,8 @@ public class AuthServiceImpl implements AuthService{
             throw new UsernameNotFoundException("유저가 존재하지 않습니다");
         }
 
+
+        log.info("AuthServiceImpl->validateUser -> 검증하려는 사용자의 정보 : "+userDto.toString());
         if(!encoder.matches(password, userDto.getPassword())){
             throw new BadCredentialsException("비밀번호가 일치하지 않습니다");
         }
@@ -102,6 +105,7 @@ public class AuthServiceImpl implements AuthService{
         return refreshMapper.existsByKeyUserId(userId);
     }
 
+    @Transactional
     public TokenDto issueTokenForFirstLoginUser(LoginRequestDto request){
         String userId = request.getUserId();
         String password = request.getPassword();

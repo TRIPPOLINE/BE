@@ -1,17 +1,23 @@
 package com.ssafy.trip.user.controller;
 
 import com.ssafy.trip.auth.dto.JoinDto;
+import com.ssafy.trip.auth.dto.TokenDto;
+import com.ssafy.trip.auth.dto.request.LoginRequestDto;
+import com.ssafy.trip.auth.service.AuthService;
 import com.ssafy.trip.user.dto.request.PasswordResetRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
+import com.ssafy.trip.user.dto.request.PasswordUpdateRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,13 +29,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.trip.user.dto.UserDto;
 import com.ssafy.trip.user.service.UserService;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-	private UserService userService;
+	private final UserService userService;
+	private final AuthService authService;
 
-	public UserController(UserService userService) {
+	public UserController(UserService userService, AuthService authService) {
 		this.userService = userService;
+		this.authService = authService;
 	}
 
 	@GetMapping("/join")
@@ -103,5 +112,21 @@ public class UserController {
 			return ResponseEntity.badRequest()
 					.body(Map.of("error", e.getMessage()));
 		}
+	}
+
+	@PreAuthorize("hasRole('ROLE_USER')")
+	@PostMapping("password/update")
+	public ResponseEntity<?> updatePassword(Authentication authentication, @RequestBody PasswordUpdateRequest request){
+
+		String userId = authentication.getName();
+		userService.updatePassword(userId, request.getCurrentPassword(), request.getNewPassword());
+		log.info("비밀번호 업데이트 요청 정상적으로 수행됨");
+
+		TokenDto responseToken = authService.login(LoginRequestDto.builder().
+				userId(userId).
+				password(request.getNewPassword()).
+				build());
+
+		return ResponseEntity.ok(responseToken);
 	}
 }

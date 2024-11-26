@@ -25,4 +25,7 @@ public interface UserMapper {
 			@Param("userId") String userId,
 			@Param("password") String password
 	);
+	UserDto selectUserById(
+			@Param("userId") String userId
+	);
 }

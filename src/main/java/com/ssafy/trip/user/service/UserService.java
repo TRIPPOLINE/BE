@@ -16,5 +16,5 @@ public interface UserService {
 	UserDto selectUser(String user_id) ;
 	void deleteUser(String userid) ;
 	public Map<String, String> resetPassword(String userId, String userName, String email);
-
+	public void updatePassword(String userId, String currentPassword, String newPassword);
 }

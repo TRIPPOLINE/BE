@@ -21,7 +21,7 @@ public class AuthController {
     public ResponseEntity<?> authenticate(
             @RequestBody LoginRequestDto request //TODO : 유효성 검사
     ){
-        if(authService.checkFirstLogin(request.getUserId())){
+        if(!authService.checkFirstLogin(request.getUserId())){
             TokenDto responseToken = authService.issueTokenForFirstLoginUser(request);
             return ResponseEntity.ok(responseToken);
         }
