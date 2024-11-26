@@ -19,7 +19,8 @@
     </resultMap>
 
     <select id="listUserReview" resultMap="ReviewResultMap">
-        SELECT r.review_no, r.title, r.content, r.user_id, r.write_at, r.score, r.spot_id,
+        SELECT r.review_no, r.title, r.content, r.user_id,
+               r.write_at, r.score, r.spot_id,
                s.title AS spot_title, s.addr1 AS spot_addr1,
                COUNT(DISTINCT rl.id) as like_count,
                rp.photo_url
@@ -28,7 +29,7 @@
                  LEFT JOIN reviewlikes rl ON r.review_no = rl.review_no
                  LEFT JOIN reviewphotos rp ON r.review_no = rp.review_no
         WHERE r.user_id = #{userId}
-        GROUP BY r.review_no, rp.id
+        GROUP BY r.review_no, rp.photo_url
         ORDER BY r.write_at DESC
     </select>
     <select id="listSpotReview" resultType="ReviewDto">
