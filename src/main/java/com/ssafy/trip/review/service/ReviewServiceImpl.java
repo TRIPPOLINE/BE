@@ -46,8 +46,8 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public void writeReview(ReviewWriteDto reviewWriteDto, List<MultipartFile> photos) {
 
-        log.info("유저 id : "+ reviewWriteDto.getUserId());
-        log.info("유저 존재 여부 : "+userMapper.selectUser(reviewWriteDto.getUserId()).toString());
+//        log.info("유저 id : "+ reviewWriteDto.getUserId());
+//        log.info("유저 존재 여부 : "+userMapper.selectUser(reviewWriteDto.getUserId()).toString());
 
 //        // ReviewWriteDto에서 ReviewDto로 변환 (title 포함)
 //        ReviewDto reviewDto = ReviewDto.builder()
