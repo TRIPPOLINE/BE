@@ -1,5 +1,6 @@
 package com.ssafy.trip.global.config;
 
+import com.ssafy.trip.auth.MyBatisPersistentTokenRepository;
 import com.ssafy.trip.auth.jwt.JwtAuthFilter;
 import com.ssafy.trip.auth.jwt.JwtUtil;
 import com.ssafy.trip.auth.service.CustomerUserDetailService;
@@ -10,6 +11,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,9 +21,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 @AllArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig extends WebSecurityConfiguration {
     private final CustomerUserDetailService customerUserDetailService;
     private final JwtUtil jwtUtil;
+    private MyBatisPersistentTokenRepository persistentTokenRepository;
 
     private static final String[] AUTH_WHITELIST = {
             "api/auth/**",
@@ -56,6 +59,8 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
 
 //    @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
